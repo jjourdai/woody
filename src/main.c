@@ -88,17 +88,20 @@ void		pack_this_file(char *filename)
 					printf("%s\n", program_header_type[phdr->p_type]);
 				else 
 					printf("Unknown Program header\n");
-				phdr = (void*)phdr + sizeof(*phdr);
+				phdr = (void*)phdr + header->e_phentsize;
 			}
 			printf("========================================\n");
 			printf("section number %d\n", header->e_shnum); 
 			Elf64_Shdr *section = mem + header->e_shoff;
+			Elf64_Shdr *shstrtab = section + header->e_shstrndx;
+			char *strtab = mem + shstrtab->sh_offset;
 			for (int i = 0; i < header->e_shnum; i++) {
+				printf("Section name :'%20s	'", strtab + section->sh_name);
 				if (section->sh_type < COUNT_OF(section_header_type))
-					printf("%s\n", section_header_type[section->sh_type]);
+					printf("type :'%s'\n", section_header_type[section->sh_type]);
 				else 
-					printf("Unknown section header\n");
-				section = (void*)section + sizeof(*section);
+					printf("type :'unknown'\n");
+				section = (void*)section + header->e_shentsize;
 			}
 			printf("========================================\n");
 		} else 

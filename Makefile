@@ -35,6 +35,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 #CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -Wall -Wextra
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
