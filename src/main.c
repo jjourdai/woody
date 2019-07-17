@@ -61,12 +61,41 @@ char *section_header_type[] = {
 //	[SHT_HIUSER] = "HIUSER",
 };
 
+void		write_data(void *mem, size_t size)
+{
+	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT), "Open failed");
+	write(fd, mem, size);
+	close(fd);
+}
+
+void		search_free_space(Elf64_Phdr *phdr)
+{
+	static Elf64_Phdr *spt_load = NULL;
+	static Elf64_Phdr *fpt_load = NULL;
+//	printf("	p_align %lx\n", phdr->p_align);
+//	printf("	p_filesz %lx\n", phdr->p_filesz);
+	printf("	p_memsz %lx\n", phdr->p_memsz);
+	printf("	p_offset %lx\n", phdr->p_offset);
+	if (fpt_load == NULL) {
+		fpt_load = phdr;
+	} else {
+		spt_load = phdr;
+		printf("Free space = '%lx' '%lu'\n", spt_load->p_offset - fpt_load->p_memsz, spt_load->p_offset - fpt_load->p_memsz);
+		if (env.free_space < spt_load->p_offset - fpt_load->p_memsz) {
+			env.free_space = spt_load->p_offset - fpt_load->p_memsz;
+			env.target = fpt_load;
+		}
+		fpt_load = spt_load;
+	}
+}
+
 void		pack_this_file(char *filename)
 {
 	int fd = __ASSERTI(-1, open(filename, O_RDONLY), "Open failed");
 	struct stat buf;
 	__ASSERTI(-1, fstat(fd, &buf), "fstat failed");
 	void *mem = __ASSERT(MAP_FAILED, mmap(0, buf.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0), "mmap failed");
+	close(fd);
 
 	Elf64_Ehdr *header;
 
@@ -88,9 +117,15 @@ void		pack_this_file(char *filename)
 					printf("%s\n", program_header_type[phdr->p_type]);
 				else 
 					printf("Unknown Program header\n");
+				
+				if (phdr->p_type == PT_LOAD)
+					search_free_space(phdr);
+				
 				phdr = (void*)phdr + header->e_phentsize;
 			}
+			//	bzero(mem + header->e_entry, 200);
 			printf("========================================\n");
+/*
 			printf("section number %d\n", header->e_shnum); 
 			Elf64_Shdr *section = mem + header->e_shoff;
 			Elf64_Shdr *shstrtab = section + header->e_shstrndx;
@@ -104,6 +139,7 @@ void		pack_this_file(char *filename)
 				section = (void*)section + header->e_shentsize;
 			}
 			printf("========================================\n");
+*/
 		} else 
 			if (header->e_type < COUNT_OF(file_object_type))
 				__FATAL(ERR_FILE_OBJ, BINARY_NAME, file_object_type[header->e_type]);
@@ -114,10 +150,24 @@ void		pack_this_file(char *filename)
 	} else {
 		__FATAL(UNKNOWN_ARCH_TYPE, BINARY_NAME, "UNKNOWN");
 	}
+//	char shellcode[] = "\x55\x48\x89\xe5\xb8\x01\x00\x00\x00\xc9\xc3";
+	char shellcode[] = "\x55\x48\x89\xe5\xb8\x3c\x00\x00\x00\x0f\x05\xc9\xc3";
+
+	if (env.target != NULL) {
+		void *ptr = mem + env.target->p_memsz;
+		printf("%lx\n", env.target->p_memsz);
+		printf("%d\n", sizeof(shellcode));
+		memcpy(ptr, shellcode, sizeof(shellcode) - 1);
+		header->e_entry = env.target->p_memsz;
+		env.target->p_memsz += sizeof(shellcode) - 1;
+		env.target->p_filesz += sizeof(shellcode) - 1;
+	}
+	write_data(mem, buf.st_size + sizeof(shellcode) - 1);
 }
 
 int		main(int argc, char **argv)
 {
+	bzero(&env, sizeof(env));
 	t_list *tmp;
 	get_options(argc, argv);
 //	init_sigaction();

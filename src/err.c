@@ -8,7 +8,7 @@ char	*error_str[] = {
 	[UNDEFINED_PARAMETER] = RED_TEXT("%s: Undefined parameters -- '%s'\n"),
 	[UNKNOWN_ARCH_TYPE] = RED_TEXT("%s: binary arch unknown -- '%x'\n"),
 	[NOT_HANDLE_ARCH_32] = RED_TEXT("%s: Architecture X86_32 not handled -- '%s'\n"),
-	[UNKNOWN_MAGIC] = RED_TEXT("%s: Unknown magic number -- '%s'\n"),
+	[UNKNOWN_MAGIC] = RED_TEXT("%s: Unknown magic number -- '%x'\n"),
 	[ERR_FILE_OBJ] = RED_TEXT("%s: file object not supported need ET_DYN or ET_EXEC -- '%s'\n"),
 };
 

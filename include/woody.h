@@ -84,7 +84,8 @@ struct woody {
 		uint16_t	value;
 		t_list		*filename;
 	} flag;
-
+	Elf64_Phdr	*target;
+	size_t		free_space;
 };
 
 struct woody env;
