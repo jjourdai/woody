@@ -150,23 +150,36 @@ void		pack_this_file(char *filename)
 	} else {
 		__FATAL(UNKNOWN_ARCH_TYPE, BINARY_NAME, "UNKNOWN");
 	}
-//	char shellcode[] = "\x55\x48\x89\xe5\xb8\x01\x00\x00\x00\xc9\xc3";
-	char shellcode[] = "\x55\x48\x89\xe5\xb8\x3c\x00\x00\x00\x0f\x05\xc9\xc3";
-
+	char shellcode[] = "\x50\x57\x56\x52\x51\x41\x50\x41\x51\x41\x52\x55\x48\x89\xe5\xe8\x0e\x00\x00\x00\x2e\x2e\x2e\x2e\x57\x4f\x4f\x44\x59\x2e\x2e\x2e\x2e\x0a\x5e\xbf\x01\x00\x00\x00\xba\x0e\x00\x00\x00\xb8\x01\x00\x00\x00\x0f\x05\x48\x89\xec\x5d\x41\x5a\x41\x59\x41\x58\x59\x5a\x5e\x5f\x58\xe9";
+	uint32_t jmp_addr;
+	size_t len = sizeof(shellcode) - 1 + sizeof(jmp_addr);
 	if (env.target != NULL) {
 		void *ptr = mem + env.target->p_memsz;
-		printf("%lx\n", env.target->p_memsz);
-		printf("%d\n", sizeof(shellcode));
+		jmp_addr = header->e_entry - env.target->p_memsz - sizeof(shellcode) - 1 - 2;
+/*
+		printf("new entry %lx\n", env.target->p_memsz);
+		printf("old entry %lx\n", header->e_entry);
+		printf("shellcode size %lx\n", sizeof(shellcode) - 1);
+		printf("jmp ? %x\n", (header->e_entry - env.target->p_memsz + sizeof(shellcode) - 1));
+		printf("test %x\n", header->e_entry - env.target->p_memsz - sizeof(shellcode) -1 + 2);
+		printf("jmp addr %x\n", jmp_addr);
+		printf("len shellcode %x\n", sizeof(shellcode) - 1);
+*/
 		memcpy(ptr, shellcode, sizeof(shellcode) - 1);
+		memcpy(ptr + sizeof(shellcode) - 1, &jmp_addr, sizeof(jmp_addr));
 		header->e_entry = env.target->p_memsz;
-		env.target->p_memsz += sizeof(shellcode) - 1;
-		env.target->p_filesz += sizeof(shellcode) - 1;
+		env.target->p_memsz += len;
+		env.target->p_filesz += len;
 	}
-	write_data(mem, buf.st_size + sizeof(shellcode) - 1);
+	write_data(mem, buf.st_size + len);
 }
 
 int		main(int argc, char **argv)
 {
+	if (argc < 2) {
+		fprintf(stderr, "Usage: Need at least one filename\n");
+		exit(EXIT_FAILURE);
+	}
 	bzero(&env, sizeof(env));
 	t_list *tmp;
 	get_options(argc, argv);
