@@ -178,23 +178,20 @@ void		pack_this_file(char *filename)
 
 int		main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-	rc5_encrypt(NULL, 0);
-// 	if (argc < 2) {
-// 		fprintf(stderr, "Usage: Need at least one filename\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	bzero(&env, sizeof(env));
-// 	t_list *tmp;
-// 	get_options(argc, argv);
-// //	init_sigaction();
+	if (argc < 2) {
+		fprintf(stderr, "Usage: Need at least one filename\n");
+		exit(EXIT_FAILURE);
+	}
+	bzero(&env, sizeof(env));
+	t_list *tmp;
+	get_options(argc, argv);
+//	init_sigaction();
 		
-// 	tmp = env.flag.filename;
-// 	while (tmp) {
-// 		printf("Current filename : %s\n", (char*)tmp->content);
-// 		pack_this_file((char*)tmp->content);
-// 		tmp = tmp->next;
-// 	}
+	tmp = env.flag.filename;
+	while (tmp) {
+		printf("Current filename : %s\n", (char*)tmp->content);
+		pack_this_file((char*)tmp->content);
+		tmp = tmp->next;
+	}
 	return (EXIT_SUCCESS);
 }
