@@ -1,0 +1,20 @@
+TODO List
+
+☐ A faire
+✔ Fait @done(19-07-19 08:24)
+✘ Raté @cancelled(19-07-19 08:25)
+
+Core:
+	☐ Remplire la todo list
+
+	Encryption/Decryption:
+		✔ Choix de l'algorithm @done(19-07-19 08:26)
+		☐ Chiffrement en C
+		☐ Déchiffrement en ASM
+
+Annexe:
+	☐ Ranger le code
+	☐ Ne prendre que ce dont on a besoin dans la libft
+
+Bonus:
+	☐ Est-ce qu'on fait des bonus ?
