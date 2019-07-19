@@ -12,6 +12,9 @@ Core:
 		☐ Chiffrement en C
 		☐ Déchiffrement en ASM
 
+	Injection:
+		☐ ajouter la possibilite de rajouter un PT_LOAD si la place est insuffisante.
+
 Annexe:
 	☐ Ranger le code
 	☐ Ne prendre que ce dont on a besoin dans la libft
