@@ -63,7 +63,7 @@ char *section_header_type[] = {
 
 void		write_data(void *mem, size_t size)
 {
-	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT), "Open failed");
+	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
 	write(fd, mem, size);
 	close(fd);
 }
