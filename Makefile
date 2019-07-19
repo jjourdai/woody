@@ -14,12 +14,15 @@ SRC_PATH = ./src/
 
 INC_PATH =	./include/
 
-SRC_NAME =	main.c \
+SRC_NAME = \
+		main.c \
 		param.c \
 		err.c \
+		rc5_encrypt.c \
 
-INC_NAME =	woody.h \
-		colors.h
+INC_NAME = \
+		woody.h \
+		colors.h \
 
 OBJ_PATH = ./.obj/
 
@@ -35,6 +38,7 @@ CC = gcc
 
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 #CFLAGS = -Wall -Wextra -Werror
+# Weverything
 CFLAGS = -Wall -Wextra -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
@@ -45,8 +49,7 @@ OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 
 INC = $(addprefix $(INC_PATH), $(INC_NAME))
 
-.PHONY: all, clean, fclean, re
-
+.PHONY: all
 all:
 	make $(NAME)
 
@@ -60,13 +63,16 @@ $(OBJ_PATH):
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC) Makefile | $(OBJ_PATH)
 	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) -c $<
 
+.PHONY: clean
 clean:
 	rm -fv $(OBJ)
 	make clean -C ./libft/
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 
+.PHONY: fclean
 fclean: clean
 	make fclean -C ./libft/
 	rm -fv $(NAME)
 
+.PHONY: re
 re: fclean all
