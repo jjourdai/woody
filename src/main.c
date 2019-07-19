@@ -64,7 +64,7 @@ char *section_header_type[] = {
 
 void		write_data(void *mem, size_t size)
 {
-	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT, 0744), "Open failed");
+	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
 	write(fd, mem, size);
 	close(fd);
 }
@@ -189,6 +189,8 @@ void		pack_this_file(char *filename)
 	munmap(mem, buf.st_size);
 	env.target = NULL;
 }
+
+#include "rc5.h"
 
 int		main(int argc, char **argv)
 {
