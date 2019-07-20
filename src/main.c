@@ -134,7 +134,7 @@ void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 
 	if (g_env.target != NULL) {
 		len = sh_len_eff(g_env.shellcode);
-		jmp_addr = header->e_entry - g_env.target->p_memsz - len - 3 - 2;
+		jmp_addr = header->e_entry - g_env.target->p_memsz - len;
 		sh_final_jump(g_env.shellcode, jmp_addr);
 		ptr = mem + g_env.target->p_memsz;
 		/*
