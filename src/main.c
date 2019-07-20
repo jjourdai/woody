@@ -133,9 +133,8 @@ void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 	void			*ptr;
 
 	if (g_env.target != NULL) {
-		len = sh_len_eff(g_env.shellcode);
+		len = g_env.shellcode->len;
 		jmp_addr = header->e_entry - g_env.target->p_memsz - len;
-		sh_final_jump(g_env.shellcode, jmp_addr);
 		ptr = mem + g_env.target->p_memsz;
 		/*
 		   printf("new entry %lx\n", g_env.target->p_memsz);
@@ -146,7 +145,8 @@ void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 		   printf("jmp addr %x\n", jmp_addr);
 		   printf("len shellcode %x\n", sizeof(shellcode) - 1);
 		 */
-
+		
+		sh_finish(g_env.shellcode, jmp_addr);
 		memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		header->e_entry = g_env.target->p_memsz;
 		g_env.target->p_memsz += len;
@@ -185,7 +185,7 @@ void		pack_this_file(char *filename)
 	} else {
 		__FATAL(UNKNOWN_ARCH_TYPE, BINARY_NAME, "UNKNOWN");
 	}
-	if (g_env.target != NULL || g_env.free_space < sh_len_eff(g_env.shellcode))
+	if (g_env.target != NULL || g_env.free_space < g_env.shellcode->len)
 		inject_code(mem, header, &buf);
 	else 
 		fprintf(stderr, "Not enough space found for '%s'\n", filename);
@@ -210,6 +210,7 @@ int		main(int argc, char **argv)
 	sh_print(g_env.shellcode, "....WOODY....\n", 14);
 	sh_endframe(g_env.shellcode);
 	sh_regs_recover(g_env.shellcode);
+	sh_jump(g_env.shellcode);
 
 	/* pack all file got in argv  */
 	tmp = g_env.flag.filename;
