@@ -37,7 +37,7 @@ static int		notdigit(long *nb, char *s, int i, t_list **new)
 	if (((*nb = atoi(&s[i])) > INT_MAX || *nb < INT_MIN))
 	{
 		if (*new)
-			list_remove(new, remove_content);
+			list_remove(new, free);
 		return (0);
 	}
 	if ((!ft_isdigit(s[i]) && (s[i] != '-' && s[i] != '+'))

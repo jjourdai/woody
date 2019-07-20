@@ -21,9 +21,9 @@ SRC_NAME = \
 		rc5_encrypt.c \
 		shellcode/sh_alloc.c \
 		shellcode/sh_free.c \
-		shellcode/sh_len_eff.c \
+		shellcode/sh_finish.c \
 		shellcode/sh_print.c \
-		shellcode/sh_final_jump.c \
+		shellcode/sh_jump.c \
 		shellcode/sh_regs_recover.c \
 		shellcode/sh_regs_save.c \
 		shellcode/sh_initframe.c \
@@ -50,7 +50,7 @@ CC = gcc
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 #CFLAGS = -Wall -Wextra -Werror
 # Weverything
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -Werror -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

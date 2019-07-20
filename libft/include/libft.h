@@ -58,6 +58,7 @@ int					btree_level_count(t_btree *root);
 
 int					tab_is_sort(int *tab, int lenght, int (*f)(int, int));
 void				shift_data(char *data, int len, int size);
+
 void				*list_pop_front(t_list **list);
 void				*list_push(t_list **alst, void const *content,\
 	size_t content_size);
@@ -65,13 +66,13 @@ void				*list_push_back(t_list **alst, void const *content,\
 	size_t content_size);
 t_list				*list_atoisplit(char const *s, char c);
 void				list_reverse(t_list **elem);
-void				list_remove(t_list **alst, void (*del)(void *, size_t));
-void				remove_content(void *content, size_t content_size);
+void				list_remove(t_list **alst, void (*del)(void *));
 int					list_not_sort(t_list *p_a, t_bool order);
 void				list_merge(t_list **begin_list1, t_list *begin_list2);
 void				list_iter(t_list *lst, void (*f)(t_list *elem));
 t_list				*list_map(t_list *lst, t_list *(*f)(t_list *elem));
 
+t_bool				ft_list_is_sort(t_list *p_a, t_bool order);
 int					list_size(t_list *begin_list);
 t_list				*ft_lststrsplit(char const *s, char c);
 
@@ -155,7 +156,6 @@ char				*ft_strjoin_size(char *s1, char *s2, int len_s1,
 					int len_s2);
 char				*ft_strcut(char *str, char c);
 int					get_next_line(const int fd, char **line);
-t_bool				ft_list_is_sort(t_list *p_a, t_bool order);
 uint16_t			compute_checksum(void *data, size_t size);
 t_bool				ft_str_is_only_digit(char *str);
 

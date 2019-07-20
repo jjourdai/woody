@@ -14,6 +14,6 @@ t_shellcode		*sh_alloc(void)
 	ptr->content = (uint8_t *)(ptr + 1);
 	ptr->len = 0;
 	ptr->len_mmap = len_page;
-	ptr->is_final = FALSE;
+	ptr->tab_textptr[0] = (size_t)-1;
 	return (ptr);
 }
