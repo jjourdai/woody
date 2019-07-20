@@ -7,20 +7,6 @@
 
 # include "libft.h"
 
-# define PUSH_RAX		0x50
-# define PUSH_RBX		0x53
-# define PUSH_RCX		0x51
-# define PUSH_RDX		0x52
-# define PUSH_RDI		0x57
-# define PUSH_RSI		0x56
-
-# define POP_RAX		0x58
-# define POP_RBX		0x5b
-# define POP_RCX		0x59
-# define POP_RDX		0x5a
-# define POP_RDI		0x5f
-# define POP_RSI		0x5e
-
 typedef struct	s_shellcode
 {
 	uint8_t		*content;
