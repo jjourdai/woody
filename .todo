@@ -5,12 +5,13 @@ TODO List
 ✘ Raté @cancelled(19-07-19 08:25)
 
 Core:
-	☐ Remplire la todo list
+	☐ Remplir la todo list
 
 	Encryption/Decryption:
 		✔ Choix de l'algorithm @done(19-07-19 08:26)
-		☐ Chiffrement en C
+		✔ Chiffrement en C @done(19-07-20 23:29)
 		☐ Déchiffrement en ASM
+		☐ Faire le chiffrement grâce à un fork
 
 	Injection:
 		☐ ajouter la possibilite de rajouter un PT_LOAD si la place est insuffisante.

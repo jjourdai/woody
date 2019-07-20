@@ -109,6 +109,30 @@ void	browse_all_program_header(void *mem, Elf64_Ehdr *header)
 	printf("========================================\n");
 }
 
+void	browse_all_program_search_text(void *mem, Elf64_Ehdr *header)
+{
+	Elf64_Shdr *section = mem + header->e_shoff;
+	Elf64_Shdr *shstrtab = section + header->e_shstrndx;
+	char *strtab = mem + shstrtab->sh_offset;
+
+	for (int i = 0; i < header->e_shnum; i++) {
+		if (ft_strncmp(strtab + section->sh_name, TEXT_NAME, ft_strlen(TEXT_NAME)) == 0)
+		{
+			// for (size_t i = 0; i < section->sh_size; ++i)
+			// {
+			// 	if (i != 0) printf(" ");
+			// 	printf("%02x", (((char *)(mem))[section->sh_offset + i] & 0xFF));
+			// }
+			// printf("\n");
+			section->sh_flags |= SHF_WRITE; //TODO see later
+			g_env.shellcode_meta.vmaddr_text_ptr = section->sh_addr;
+			g_env.shellcode_meta.vmaddr_text_len = section->sh_size;
+			return ;
+		}
+		section = (void*)section + header->e_shentsize;
+	}
+}
+
 void	display_section_header(void *mem, Elf64_Ehdr *header)
 {
 	printf("section number %d\n", header->e_shnum); 
@@ -129,25 +153,22 @@ void	display_section_header(void *mem, Elf64_Ehdr *header)
 
 void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 {
-	uint32_t		jmp_addr;
 	size_t			len;
 	void			*ptr;
 
 	if (g_env.target != NULL) {
 		len = g_env.shellcode->len;
-		jmp_addr = header->e_entry - (g_env.target->p_memsz + g_env.target->p_offset) - len;
+		g_env.shellcode_meta.entrypoint = header->e_entry - (g_env.target->p_memsz + g_env.target->p_offset) - len;
 		ptr = mem + g_env.target->p_memsz + g_env.target->p_offset;
-		/*
-		   printf("new entry %lx\n", g_env.target->p_memsz);
-		   printf("old entry %lx\n", header->e_entry);
-		   printf("shellcode size %lx\n", sizeof(shellcode) - 1);
-		   printf("jmp ? %x\n", (header->e_entry - g_env.target->p_memsz + sizeof(shellcode) - 1));
-		   printf("test %x\n", header->e_entry - g_env.target->p_memsz - sizeof(shellcode) -1 + 2);
-		   printf("jmp addr %x\n", jmp_addr);
-		   printf("len shellcode %x\n", sizeof(shellcode) - 1);
-		 */
-		
-		sh_finish(g_env.shellcode, jmp_addr);
+
+		sh_finish(g_env.shellcode, g_env.shellcode_meta);
+		printf("Shellcode injected\n");
+		for (size_t i = 0; i < g_env.shellcode->len; ++i)
+		{
+			if (i != 0) printf(" ");
+			printf("%02x", g_env.shellcode->content[i]);
+		}
+		printf("\n");
 		memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		header->e_entry = g_env.target->p_memsz + g_env.target->p_offset;
 		g_env.target->p_memsz += len;
@@ -176,7 +197,8 @@ void		pack_this_file(char *filename)
 		printf("file class type := %s\n", elf_class[arch]);
 		if (header->e_type == ET_EXEC || header->e_type == ET_DYN) {
 			browse_all_program_header(mem, header);
-		//	display_section_header(mem, header);
+			browse_all_program_search_text(mem, header);
+			// display_section_header(mem, header);
 		} else 
 			if (header->e_type < COUNT_OF(file_object_type))
 				__FATAL(ERR_FILE_OBJ, BINARY_NAME, file_object_type[header->e_type]);
@@ -195,6 +217,8 @@ void		pack_this_file(char *filename)
 	g_env.target = NULL;
 }
 
+extern char	edata;
+
 int		main(int argc, char **argv)
 {
 	if (argc < 2) {
@@ -209,6 +233,10 @@ int		main(int argc, char **argv)
 	g_env.shellcode = sh_alloc();
 	sh_regs_save(g_env.shellcode);
 	sh_initframe(g_env.shellcode);
+	// sh_test(g_env.shellcode);
+	// sh_test(g_env.shellcode);
+	// sh_mprotect_text_writable(g_env.shellcode);
+	// sh_mprotect_text_executable(g_env.shellcode);
 	sh_print(g_env.shellcode, "....WOODY....\n", 14);
 	sh_endframe(g_env.shellcode);
 	sh_regs_recover(g_env.shellcode);

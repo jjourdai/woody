@@ -24,6 +24,7 @@ SRC_NAME = \
 		shellcode/sh_finish.c \
 		shellcode/sh_print.c \
 		shellcode/sh_jump.c \
+		shellcode/sh_mprotect.c \
 		shellcode/sh_regs_recover.c \
 		shellcode/sh_regs_save.c \
 		shellcode/sh_initframe.c \

@@ -14,6 +14,7 @@
 # define NMAP_H
 
 # include <errno.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <stdarg.h>
@@ -47,6 +48,8 @@
 # define DUP_ON 1
 # define FATAL 1
 # define ELF_MAGIC 0x464c457f
+
+# define TEXT_NAME	".text"
 
 enum	options {
 	F_HELP = (1 << 0),
@@ -83,9 +86,10 @@ struct woody {
 		uint16_t	value;
 		t_list		*filename;
 	} flag;
-	Elf64_Phdr	*target;
-	size_t		free_space;
-	t_shellcode	*shellcode;
+	Elf64_Phdr			*target;
+	size_t				free_space;
+	t_shellcode			*shellcode;
+	t_shellcode_meta	shellcode_meta;
 };
 
 struct woody	g_env;

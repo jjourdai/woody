@@ -10,7 +10,6 @@ void			sh_print(t_shellcode *sh, const char *str, uint8_t len)
 	sh->content[sh->len + 4] = 0;
 	ft_memcpy(sh->content + sh->len + 5, str, len);
 	sh->len += len + 5;
-	ft_bzero(sh->content + sh->len, 18);
 	sh->content[sh->len + 0] = 0xbf; // move edi
 	sh->content[sh->len + 1] = 0x01; // STDOUT
 	sh->content[sh->len + 5] = 0x5e; // pop rsi -> put the string in rsi
