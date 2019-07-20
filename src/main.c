@@ -75,15 +75,16 @@ void		search_free_space(Elf64_Phdr *phdr)
 
 //	printf("	p_align %lx\n", phdr->p_align);
 //	printf("	p_filesz %lx\n", phdr->p_filesz);
-	printf("	p_memsz %lx\n", phdr->p_memsz);
-	printf("	p_offset %lx\n", phdr->p_offset);
+//	printf("	p_memsz %lx\n", phdr->p_memsz);
+//	printf("	p_offset %lx\n", phdr->p_offset);
 	if (fpt_load == NULL) {
 		fpt_load = phdr;
 	} else {
 		spt_load = phdr;
-		printf("Free space = '%lx' '%lu'\n", spt_load->p_offset - fpt_load->p_memsz, spt_load->p_offset - fpt_load->p_memsz);
-		if (g_env.free_space < spt_load->p_offset - fpt_load->p_memsz) {
-			g_env.free_space = spt_load->p_offset - fpt_load->p_memsz;
+		Elf64_Off space = spt_load->p_offset - (fpt_load->p_memsz + fpt_load->p_offset);
+		printf("Free space = '%lx' '%lu'\n", space, space);
+		if (g_env.free_space < space) {
+			g_env.free_space = space;
 			g_env.target = fpt_load;
 		}
 		fpt_load = spt_load;
@@ -134,9 +135,10 @@ void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 
 	if (g_env.target != NULL) {
 		len = sh_len_eff(g_env.shellcode);
-		jmp_addr = header->e_entry - g_env.target->p_memsz - len;
+		jmp_addr = header->e_entry - (g_env.target->p_memsz + g_env.target->p_offset) - len;
 		sh_final_jump(g_env.shellcode, jmp_addr);
-		ptr = mem + g_env.target->p_memsz;
+		ptr = mem + g_env.target->p_memsz + g_env.target->p_offset;
+		printf("Test %lx\n", g_env.target->p_memsz + g_env.target->p_offset);
 		/*
 		   printf("new entry %lx\n", g_env.target->p_memsz);
 		   printf("old entry %lx\n", header->e_entry);
@@ -148,11 +150,12 @@ void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 		 */
 
 		memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
-		header->e_entry = g_env.target->p_memsz;
+		header->e_entry = g_env.target->p_memsz + g_env.target->p_offset;
 		g_env.target->p_memsz += len;
 		g_env.target->p_filesz += len;
+		g_env.target->p_flags = g_env.target->p_flags | PF_X;
 	}
-	write_data(mem, buf->st_size + len);
+	write_data(mem, buf->st_size);
 }
 
 void		pack_this_file(char *filename)
