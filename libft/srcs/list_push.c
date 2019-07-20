@@ -62,7 +62,7 @@ void	*list_push_back(t_list **alst, void const *content, size_t content_size)
 	return (new);
 }
 
-void	list_remove(t_list **alst, void (*del)(void *, size_t))
+void	list_remove(t_list **alst, void (*del)(void *))
 {
 	t_list *tmp;
 
@@ -70,20 +70,13 @@ void	list_remove(t_list **alst, void (*del)(void *, size_t))
 	while (tmp)
 	{
 		tmp = tmp->next;
-		del((*alst)->content, (*alst)->content_size);
+		if (del != NULL)
+			del((*alst)->content);
+		free((*alst)->content);
 		free(*alst);
 		*alst = tmp;
 	}
 	*alst = NULL;
-}
-
-void	remove_content(void *content, size_t content_size)
-{
-	if (content)
-	{
-		ft_bzero(content, content_size);
-		free(content);
-	}
 }
 
 void	list_reverse(t_list **lst)
