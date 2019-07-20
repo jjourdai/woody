@@ -1,5 +1,6 @@
 #include "woody.h"
-#include "colors.h"
+// #include "colors.h"
+#include "shellcode.h"
 
 /*
 void		signal_handler(int signal)
@@ -15,8 +16,6 @@ void		init_sigaction(void)
 	sigaction(SIGALRM, &sig, NULL);
 }
 */
-
-char shellcode[] = "\x50\x57\x56\x52\x51\x41\x50\x41\x51\x41\x52\x55\x48\x89\xe5\xe8\x0e\x00\x00\x00\x2e\x2e\x2e\x2e\x57\x4f\x4f\x44\x59\x2e\x2e\x2e\x2e\x0a\x5e\xbf\x01\x00\x00\x00\xba\x0e\x00\x00\x00\xb8\x01\x00\x00\x00\x0f\x05\x48\x89\xec\x5d\x41\x5a\x41\x59\x41\x58\x59\x5a\x5e\x5f\x58\xe9";
 
 char *file_object_type[] = {
 	[ET_NONE] = "ET_NONE",
@@ -83,9 +82,9 @@ void		search_free_space(Elf64_Phdr *phdr)
 	} else {
 		spt_load = phdr;
 		printf("Free space = '%lx' '%lu'\n", spt_load->p_offset - fpt_load->p_memsz, spt_load->p_offset - fpt_load->p_memsz);
-		if (env.free_space < spt_load->p_offset - fpt_load->p_memsz) {
-			env.free_space = spt_load->p_offset - fpt_load->p_memsz;
-			env.target = fpt_load;
+		if (g_env.free_space < spt_load->p_offset - fpt_load->p_memsz) {
+			g_env.free_space = spt_load->p_offset - fpt_load->p_memsz;
+			g_env.target = fpt_load;
 		}
 		fpt_load = spt_load;
 	}
@@ -129,25 +128,29 @@ void	display_section_header(void *mem, Elf64_Ehdr *header)
 
 void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 {
-	uint32_t jmp_addr;
-	size_t len = sizeof(shellcode) - 1 + sizeof(jmp_addr);
-	if (env.target != NULL) {
-		void *ptr = mem + env.target->p_memsz;
-		jmp_addr = header->e_entry - env.target->p_memsz - sizeof(shellcode) - 1 - 2;
+	uint32_t		jmp_addr;
+	size_t			len;
+	void			*ptr;
+
+	if (g_env.target != NULL) {
+		len = sh_len_eff(g_env.shellcode);
+		jmp_addr = header->e_entry - g_env.target->p_memsz - len - 3 - 2;
+		sh_final_jump(g_env.shellcode, jmp_addr);
+		ptr = mem + g_env.target->p_memsz;
 		/*
-		   printf("new entry %lx\n", env.target->p_memsz);
+		   printf("new entry %lx\n", g_env.target->p_memsz);
 		   printf("old entry %lx\n", header->e_entry);
 		   printf("shellcode size %lx\n", sizeof(shellcode) - 1);
-		   printf("jmp ? %x\n", (header->e_entry - env.target->p_memsz + sizeof(shellcode) - 1));
-		   printf("test %x\n", header->e_entry - env.target->p_memsz - sizeof(shellcode) -1 + 2);
+		   printf("jmp ? %x\n", (header->e_entry - g_env.target->p_memsz + sizeof(shellcode) - 1));
+		   printf("test %x\n", header->e_entry - g_env.target->p_memsz - sizeof(shellcode) -1 + 2);
 		   printf("jmp addr %x\n", jmp_addr);
 		   printf("len shellcode %x\n", sizeof(shellcode) - 1);
 		 */
-		memcpy(ptr, shellcode, sizeof(shellcode) - 1);
-		memcpy(ptr + sizeof(shellcode) - 1, &jmp_addr, sizeof(jmp_addr));
-		header->e_entry = env.target->p_memsz;
-		env.target->p_memsz += len;
-		env.target->p_filesz += len;
+
+		memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
+		header->e_entry = g_env.target->p_memsz;
+		g_env.target->p_memsz += len;
+		g_env.target->p_filesz += len;
 	}
 	write_data(mem, buf->st_size + len);
 }
@@ -182,15 +185,13 @@ void		pack_this_file(char *filename)
 	} else {
 		__FATAL(UNKNOWN_ARCH_TYPE, BINARY_NAME, "UNKNOWN");
 	}
-	if (env.target != NULL || env.free_space < sizeof(shellcode) - 1 + sizeof(uint32_t))
+	if (g_env.target != NULL || g_env.free_space < sh_len_eff(g_env.shellcode))
 		inject_code(mem, header, &buf);
 	else 
 		fprintf(stderr, "Not enough space found for '%s'\n", filename);
 	munmap(mem, buf.st_size);
-	env.target = NULL;
+	g_env.target = NULL;
 }
-
-#include "rc5.h"
 
 int		main(int argc, char **argv)
 {
@@ -198,17 +199,25 @@ int		main(int argc, char **argv)
 		fprintf(stderr, "Usage: Need at least one filename\n");
 		exit(EXIT_FAILURE);
 	}
-	bzero(&env, sizeof(env));
+	ft_bzero(&g_env, sizeof(g_env));
 	t_list *tmp;
 	get_options(argc, argv);
 //	init_sigaction();
 
+	g_env.shellcode = sh_alloc();
+	sh_regs_save(g_env.shellcode);
+	sh_initframe(g_env.shellcode);
+	sh_print(g_env.shellcode, "....WOODY....\n", 14);
+	sh_endframe(g_env.shellcode);
+	sh_regs_recover(g_env.shellcode);
+
 	/* pack all file got in argv  */
-	tmp = env.flag.filename;
+	tmp = g_env.flag.filename;
 	while (tmp) {
 		printf("Current filename : %s\n", (char*)tmp->content);
 		pack_this_file((char*)tmp->content);
 		tmp = tmp->next;
 	}
+	sh_free(g_env.shellcode);
 	return (EXIT_SUCCESS);
 }

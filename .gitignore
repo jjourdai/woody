@@ -52,6 +52,7 @@ Mkfile.old
 dkms.conf
 
 #Custom
+.vscode/
 *.swp
 woody
 packed

@@ -19,10 +19,21 @@ SRC_NAME = \
 		param.c \
 		err.c \
 		rc5_encrypt.c \
+		shellcode/sh_alloc.c \
+		shellcode/sh_free.c \
+		shellcode/sh_len_eff.c \
+		shellcode/sh_print.c \
+		shellcode/sh_final_jump.c \
+		shellcode/sh_regs_recover.c \
+		shellcode/sh_regs_save.c \
+		shellcode/sh_initframe.c \
+		shellcode/sh_endframe.c \
 
 INC_NAME = \
 		woody.h \
 		colors.h \
+		rc5.h \
+		shellcode.h \
 
 OBJ_PATH = ./.obj/
 
@@ -57,10 +68,9 @@ $(NAME): $(OBJ)
 	make -C ./libft/
 	$(CC) $^ -o $(NAME) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
-$(OBJ_PATH):
-	mkdir -p $@
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(INC) Makefile | $(OBJ_PATH)
+	@ mkdir -p $(shell dirname $@)
 	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) -c $<
 
 .PHONY: clean

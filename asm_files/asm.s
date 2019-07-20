@@ -1,33 +1,31 @@
+
 init:
 	push	rax
+	push	rbx
+	push	rcx
+	push	rdx
 	push	rdi
 	push	rsi
-	push	rdx
-	push	rcx
-	push	r8
-	push	r9
-	push	r10
 
-	push rbp
-	mov rbp, rsp
-	call inject
+	push	rbp
+	mov		rbp, rsp
+
+	call	next
 	db "....WOODY....", 10
 
-inject:
-	pop rsi
-	mov rdi, 1
-	mov rdx , 14
-	mov eax, 1
+next:
+	mov		rdi, 1
+	pop		rsi
+	mov		rdx, 14
+	mov		rax, 1
 	syscall
-	mov rsp, rbp
-	pop rbp
 
-	pop	r10
-	pop	r9
-	pop	r8
-	pop	rcx
-	pop	rdx
-	pop	rsi
-	pop	rdi
-	pop	rax
+	mov		rsp, rbp
+	pop		rbp
 
+	pop		rsi
+	pop		rdi
+	pop		rdx
+	pop		rcx
+	pop		rbx
+	pop		rax

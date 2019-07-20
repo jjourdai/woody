@@ -104,9 +104,8 @@ t_list		*get_params(char **argv, int argc, uint32_t *flag)
 
 void	get_options(int argc, char **argv)
 {
-	ft_bzero(&env, sizeof(env));
-	env.flag.filename = get_params(argv, argc, (uint32_t*)&env.flag.value);
-	if (env.flag.value & F_HELP) {
+	g_env.flag.filename = get_params(argv, argc, (uint32_t*)&g_env.flag.value);
+	if (g_env.flag.value & F_HELP) {
 		fprintf(stderr, GREEN_TEXT(USAGE) GREEN_TEXT(HELPER)); exit(EXIT_FAILURE);
 	}
 }

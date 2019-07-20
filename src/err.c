@@ -21,7 +21,7 @@ static void internal_handle_error(uint32_t line, char *file, t_bool fatal, char 
 	va_end(ap);
 	if (DEBUG)
 		fprintf(stderr, RED_TEXT("Line : %u, File %s\n"), line, file);
-	if (fatal == true)
+	if (fatal == TRUE)
 		exit(EXIT_FAILURE);
 }
 
