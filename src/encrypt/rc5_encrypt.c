@@ -67,13 +67,11 @@ static void	cipher(uint64_t S[S_SIZE], uint64_t *AA, uint64_t *BB)
 	*BB = B;
 }
 
-void		rc5_encrypt(void *in, size_t in_len, void *out)
+void		rc5_encrypt(void *in, size_t in_len)
 {
 	uint8_t		random_key[KEY_SIZE]; // TODO randomize
 	uint64_t	S[S_SIZE];
 	uint64_t	*src;
-	uint64_t	*dest;
-	uint64_t	regs[2];
 
 
 	for (uint8_t i = 0; i < KEY_SIZE; ++i)
@@ -82,17 +80,10 @@ void		rc5_encrypt(void *in, size_t in_len, void *out)
 	init_S_array(S, random_key);
 
 	src = (uint64_t *)in;
-	dest = (uint64_t *)out;
 	while (in_len >= 16)
 	{
-		regs[0] = src[0];
-		regs[1] = src[1];
-		cipher(S, regs + 0, regs + 1);
-		dest[0] = regs[0];
-		dest[1] = regs[1];
+		cipher(S, src + 0, src + 1);
 		src += 2;
-		dest += 2;
 		in_len -= 16;
 	}
-	ft_memcpy(dest, src, in_len);
 }

@@ -16,7 +16,7 @@
 **
 */
 
-void		rc5_encrypt(void *data, size_t len, void *dest);
+void		rc5_encrypt(void *data, size_t len);
 
 /*
 **	3 Parameters

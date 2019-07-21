@@ -22,8 +22,8 @@ typedef struct	s_shellcode
 typedef struct	s_shellcode_meta
 {
 	uint32_t	entrypoint;
-	uint64_t	vmaddr_text_ptr;
-	uint64_t	vmaddr_text_len;
+	uint32_t	vmaddr_text_ptr;
+	uint32_t	vmaddr_text_len;
 }				t_shellcode_meta;
 
 t_shellcode		*sh_alloc(void);
@@ -41,9 +41,9 @@ void			sh_print(t_shellcode *sh, const char *str, uint8_t len);
 
 void			sh_jump(t_shellcode *sh);
 
-void			sh_mprotect_text_writable(t_shellcode *sh);
-void			sh_mprotect_text_executable(t_shellcode *sh);
+// void			sh_mprotect_text_writable(t_shellcode *sh);
+// void			sh_mprotect_text_executable(t_shellcode *sh);
 
-void		sh_test(t_shellcode *sh);
+void			sh_xor32(t_shellcode *sh, uint32_t key);
 
 #endif

@@ -1,5 +1,5 @@
 
-# rdi	pointer
+# edi	pointer
 # rsi	len
 # edx	xor key
 
@@ -9,10 +9,10 @@ xor:
 	.loop:
 		cmp		rcx, 4
 		jl		.end
-		xor		edi, edx
+		xor		[edi], edx
 
 		add		edi, 4
 		sub		rcx, 4
 		jmp		.loop
-	
+
 	.end:

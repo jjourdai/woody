@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef NMAP_H
-# define NMAP_H
+#ifndef WOODY_H
+# define WOODY_H
 
 # include <errno.h>
 # include <unistd.h>
@@ -86,13 +86,20 @@ struct woody {
 		uint16_t	value;
 		t_list		*filename;
 	} flag;
-	Elf64_Phdr			*target;
-	size_t				free_space;
 	t_shellcode			*shellcode;
 	t_shellcode_meta	shellcode_meta;
 };
 
-struct woody	g_env;
+typedef struct	s_elf64
+{
+	void		*mem;
+	size_t		len;
+	Elf64_Ehdr	*header;
+	Elf64_Phdr	*target;
+	size_t		free_space;
+	size_t		offset_text;
+	size_t		len_text;
+}				t_elf64;
 
 /* params.c */
 t_list	*get_params(char **argv, int argc, uint32_t *flag);
@@ -102,5 +109,21 @@ void	get_options(int argc, char **argv);
 void	handle_error(uint32_t line, char *file, t_bool fatal, uint32_t error_code,  ...);
 int		x_int(int err, int res, char *str, char *file, int line);
 void	*x_void(void *err, void *res, char *str, char *file, int line);
+
+/* elf64_loader.c */
+
+t_bool	elf64_loader(t_elf64 *elf, const char *filename);
+
+// globals
+struct woody			g_env;
+
+extern const char		*file_object_type[];
+extern const size_t		file_object_type_len;
+extern const char		*elf_class[];
+extern const size_t		elf_class_len;
+extern const char		*program_header_type[];
+extern const size_t		program_header_type_len;
+extern const char		*section_header_type[];
+extern const size_t		section_header_type_len;
 
 #endif
