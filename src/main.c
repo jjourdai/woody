@@ -151,6 +151,17 @@ void	display_section_header(void *mem, Elf64_Ehdr *header)
 
 }
 
+Elf64_Off	remove_sections_header(Elf64_Ehdr *header)
+{
+	Elf64_Off section_offset = header->e_shoff;
+	header->e_shoff = 0;
+	header->e_shentsize = 0;
+	header->e_shnum = 0;
+	header->e_shstrndx = SHN_UNDEF;
+
+	return section_offset;
+}
+
 void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 {
 	size_t			len;
@@ -175,7 +186,7 @@ void	inject_code(void *mem, Elf64_Ehdr *header, struct stat *buf)
 		g_env.target->p_filesz += len;
 		g_env.target->p_flags = g_env.target->p_flags | PF_X;
 	}
-	write_data(mem, buf->st_size);
+	write_data(mem, remove_sections_header(header));
 }
 
 void		pack_this_file(char *filename)
