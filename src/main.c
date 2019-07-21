@@ -146,7 +146,7 @@ void	inject_code(t_elf64 *elf)
 			printf("%02x", g_env.shellcode->content[i]);
 		}
 		printf("\n");
-		// xor32(mem + g_env.offset_text, g_env.len_text, 0x12345678);
+		xor32(elf->mem + elf->offset_text, elf->len_text, 0x12345678);
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset;
 		elf->target->p_memsz += len;
@@ -163,7 +163,7 @@ void		pack_this_file(char *filename)
 		return ;
 	browse_all_program_header(&elf);
 	browse_all_program_search_text(&elf);
-	display_section_header(&elf);
+	// display_section_header(&elf);
 	if (elf.target != NULL || elf.free_space < g_env.shellcode->len)
 		inject_code(&elf);
 	else 
@@ -190,7 +190,10 @@ int		main(int argc, char **argv)
 	// sh_test(g_env.shellcode);
 	// sh_mprotect_text_writable(g_env.shellcode);
 	// sh_mprotect_text_executable(g_env.shellcode);
-	// sh_xor32(g_env.shellcode, 0x12345678);
+	if (sh_xor32(g_env.shellcode, 0x12345678) == FALSE)
+	{
+		exit(EXIT_FAILURE);
+	}
 	sh_print(g_env.shellcode, "....WOODY....\n", 14);
 	sh_endframe(g_env.shellcode);
 	sh_regs_recover(g_env.shellcode);

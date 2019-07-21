@@ -37,10 +37,9 @@ t_bool	elf64_loader(t_elf64 *elf, const char *filename)
 	}
 	arch = hdr->e_ident[EI_CLASS];
 	if (arch == ELFCLASS64) {
-		printf("file class type := %s\n", elf_class[arch]);
-		if ((hdr->e_type == ET_EXEC || hdr->e_type == ET_DYN) == FALSE) {
+		if ((hdr->e_type == ET_EXEC || hdr->e_type == ET_DYN || hdr->e_type == ET_REL) == FALSE) {
 			dprintf(2,
-				"file object not supported need ET_DYN or ET_EXEC -- '%s'\n",
+				"file object not supported need ET_DYN, ET_EXEC or ET_REL -- '%s'\n",
 				(hdr->e_type < file_object_type_len) ? file_object_type[hdr->e_type] : "UNKNOWN_TYPE corrupted file");
 			munmap(mem, buf.st_size);
 			return (FALSE);

@@ -33,6 +33,7 @@ SRC_NAME = \
 		shellcode/sh_initframe.c \
 		shellcode/sh_endframe.c \
 		shellcode/sh_xor32.c \
+		shellcode/sh_file.c \
 
 INC_NAME = \
 		woody.h \

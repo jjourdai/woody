@@ -31,6 +31,8 @@ void			sh_free(t_shellcode *sh);
 
 void			sh_finish(t_shellcode *sh, t_shellcode_meta meta);
 
+t_bool			sh_file(t_shellcode *sh, const char *filepath);
+
 void			sh_regs_save(t_shellcode *sh);
 void			sh_regs_recover(t_shellcode *sh);
 
@@ -44,6 +46,6 @@ void			sh_jump(t_shellcode *sh);
 // void			sh_mprotect_text_writable(t_shellcode *sh);
 // void			sh_mprotect_text_executable(t_shellcode *sh);
 
-void			sh_xor32(t_shellcode *sh, uint32_t key);
+t_bool			sh_xor32(t_shellcode *sh, uint32_t key);
 
 #endif
