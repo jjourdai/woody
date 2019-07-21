@@ -18,10 +18,26 @@ void		init_sigaction(void)
 }
 */
 
+Elf64_Off	remove_sections_header(t_elf64 *elf)
+{
+	Elf64_Off section_offset;
+	
+	section_offset = elf->header->e_shoff;
+	elf->header->e_shoff = 0;
+	elf->header->e_shentsize = 0;
+	elf->header->e_shnum = 0;
+	elf->header->e_shstrndx = SHN_UNDEF;
+
+	return (section_offset);
+}
+
 void		write_data(t_elf64 *elf)
 {
+	size_t	len;
+
+	len = remove_sections_header(elf);
 	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
-	write(fd, elf->mem, elf->len);
+	write(fd, elf->mem, len);
 	close(fd);
 }
 
