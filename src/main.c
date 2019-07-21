@@ -33,11 +33,11 @@ Elf64_Off	remove_sections_header(t_elf64 *elf)
 
 void		write_data(t_elf64 *elf)
 {
-	size_t	len;
+	// size_t	len;
 
-	len = remove_sections_header(elf);
+	// len = remove_sections_header(elf);
 	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
-	write(fd, elf->mem, len);
+	write(fd, elf->mem, elf->len);
 	close(fd);
 }
 
@@ -78,7 +78,10 @@ void	browse_all_program_header(t_elf64 *elf)
 		else 
 			printf("Unknown Program header\n");
 		if (phdr->p_type == PT_LOAD)
+		{
 			search_free_space(elf, phdr);
+			phdr->p_flags |= PF_W;
+		}
 		phdr = (void*)phdr + elf->header->e_phentsize;
 	}
 	printf("========================================\n");
