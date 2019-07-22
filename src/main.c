@@ -138,9 +138,15 @@ void	inject_code(t_elf64 *elf)
 
 	if (elf->target != NULL) {
 		len = g_env.shellcode->len;
-		g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset) - len;
+		if (elf->header->e_type == ET_DYN) {
+			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset) - len;
+			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr;
+		} else {
+			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr) - len;
+			printf("%llx\n", elf->header->e_entry);
+			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr;
+		}
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
-
 		sh_finish(g_env.shellcode, g_env.shellcode_meta);
 		printf("Shellcode injected; len: %lu\n", g_env.shellcode->len);
 		for (size_t i = 0; i < g_env.shellcode->len; ++i)
@@ -151,7 +157,6 @@ void	inject_code(t_elf64 *elf)
 		printf("\n");
 		xor32(elf->mem + elf->offset_text, elf->len_text, 0x12345678);
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
-		elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset;
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;
 		elf->target->p_flags = elf->target->p_flags | PF_X;
@@ -193,7 +198,7 @@ int		main(int argc, char **argv)
 	// sh_test(g_env.shellcode);
 	// sh_mprotect_text_writable(g_env.shellcode);
 	// sh_mprotect_text_executable(g_env.shellcode);
-	if (sh_xor32(g_env.shellcode, 0x12345678) == FALSE)
+	if (sh_xor32(g_env.shellcode, 0x78563412) == FALSE)
 	{
 		exit(EXIT_FAILURE);
 	}
