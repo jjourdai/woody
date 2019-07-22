@@ -156,6 +156,7 @@ void	inject_code(t_elf64 *elf)
 		}
 		printf("\n");
 		xor32(elf->mem + elf->offset_text, elf->len_text, 0x12345678);
+printf("=dwadkawjdalwkdjkalwdjwa %llx %llx\n", elf->offset_text, elf->len_text);
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;
