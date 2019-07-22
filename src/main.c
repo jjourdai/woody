@@ -143,7 +143,7 @@ void	inject_code(t_elf64 *elf)
 			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr;
 		} else {
 			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr) - len;
-			printf("%llx\n", elf->header->e_entry);
+			printf("%lx\n", elf->header->e_entry);
 			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr;
 		}
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
