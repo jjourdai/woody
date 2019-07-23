@@ -36,7 +36,7 @@ void		write_data(t_elf64 *elf)
 	// size_t	len;
 
 	// len = remove_sections_header(elf);
-	int fd = __ASSERTI(-1, open("packed", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
+	int fd = __ASSERTI(-1, open("woody", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
 	write(fd, elf->mem, elf->len);
 	close(fd);
 }

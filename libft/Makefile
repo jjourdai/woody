@@ -53,18 +53,19 @@ NAME = libft.a
 CC = gcc
 
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
-CFLAGS = -Wall -Wextra -g -Werror
+CFLAGS = -MD -Wall -Wextra -Werror -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
+DEP_NAME = $(SRC_NAME:.c=.d)
 
 SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
+DEP = $(addprefix $(OBJ_PATH), $(DEP_NAME))
 
-.PHONY: all, clean, fclean, re
-
+.PHONY: all
 all: $(NAME)
 
-$(NAME): $(OBJ) ./include
+$(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
@@ -72,11 +73,16 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir $(OBJ_PATH) 2> /dev/null || true
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
+include $(DEP)
+
+.PHONY: clean
 clean:
 	rm -fv $(OBJ)
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 
+.PHONY: fclean
 fclean: clean
 	rm -fv $(NAME)
 
+.PHONY: re
 re: fclean all
