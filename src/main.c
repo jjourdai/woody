@@ -55,7 +55,7 @@ void		search_free_space(t_elf64 *elf, Elf64_Phdr *phdr)
 	} else {
 		spt_load = phdr;
 		Elf64_Off space = spt_load->p_offset - (fpt_load->p_memsz + fpt_load->p_offset);
-		printf("%llx %llx %llx\n", spt_load->p_offset , fpt_load->p_memsz , fpt_load->p_offset);
+		printf("%lx %lx %lx\n", spt_load->p_offset , fpt_load->p_memsz , fpt_load->p_offset);
 		printf("Free space = '%lx' '%lu'\n", space, space);
 		if (elf->free_space < space) {
 			elf->free_space = space;
@@ -146,8 +146,8 @@ void	inject_code(t_elf64 *elf)
 		} else {
 			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_vaddr) - len;
 			elf->header->e_entry = elf->target->p_memsz + elf->target->p_vaddr;
-			printf("%llx\n", g_env.shellcode_meta.entrypoint); 
-			printf("e_entry %llx\n", elf->header->e_entry); 
+			printf("%x\n", g_env.shellcode_meta.entrypoint);
+			printf("e_entry %lx\n", elf->header->e_entry);
 			g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - (elf->target->p_memsz + elf->target->p_vaddr) - len;
 		}
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
