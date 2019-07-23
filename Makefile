@@ -49,14 +49,14 @@ LDFLAGS = -Llibft
 
 LDLIBS = -lft
 
-NAME = woody
+NAME = woody_woodpacker
 	
 CC = gcc
 
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 #CFLAGS = -Wall -Wextra -Werror
 # Weverything
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -std=gnu11 -Wall -Wextra -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -89,6 +89,7 @@ clean:
 fclean: clean
 	make fclean -C ./libft/
 	rm -fv $(NAME)
+	rm -fv woody
 
 .PHONY: re
 re: fclean all
