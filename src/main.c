@@ -141,10 +141,11 @@ void	inject_code(t_elf64 *elf)
 		if (elf->header->e_type == ET_DYN) {
 			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset) - len;
 			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr;
+			g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - (elf->target->p_memsz + elf->target->p_offset) - len;
 		} else {
 			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr) - len;
-			printf("%lx\n", elf->header->e_entry);
 			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr;
+			g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - (elf->target->p_memsz + elf->target->p_offset + elf->target->p_vaddr) - len;
 		}
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
 		sh_finish(g_env.shellcode, g_env.shellcode_meta);
@@ -156,7 +157,6 @@ void	inject_code(t_elf64 *elf)
 		}
 		printf("\n");
 		xor32(elf->mem + elf->offset_text, elf->len_text, 0x12345678);
-printf("=dwadkawjdalwkdjkalwdjwa %llx %llx\n", elf->offset_text, elf->len_text);
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;

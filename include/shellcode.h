@@ -24,6 +24,7 @@ typedef struct	s_shellcode_meta
 	uint32_t	entrypoint;
 	uint32_t	vmaddr_text_ptr;
 	uint32_t	vmaddr_text_len;
+	size_t		section_text_offset;
 }				t_shellcode_meta;
 
 t_shellcode		*sh_alloc(void);

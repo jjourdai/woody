@@ -51,12 +51,12 @@ LDLIBS = -lft
 
 NAME = woody
 	
-CC = gcc
+CC = gcc -no-pie
 
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 #CFLAGS = -Wall -Wextra -Werror
 # Weverything
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
