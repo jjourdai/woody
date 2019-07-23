@@ -21,7 +21,7 @@ Core:
 
 	Test:
 		☐ Faire tout plein de tests
-			☐ https://hub.docker.com/_/ubuntu
+			✔ https://hub.docker.com/_/ubuntu @done(19-07-23 23:34)
 			☐ https://hub.docker.com/_/alpine
 			☐ https://hub.docker.com/_/centos
 			☐ https://hub.docker.com/_/debian
