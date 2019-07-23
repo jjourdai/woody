@@ -5,13 +5,29 @@ TODO List
 ✘ Raté @cancelled(19-07-19 08:25)
 
 Core:
-	☐ Remplir la todo list
+	✔ Remplir la todo list @done(19-07-23 20:10)
 
 	Encryption/Decryption:
-		✔ Choix de l'algorithm @done(19-07-19 08:26)
-		✔ Chiffrement en C @done(19-07-20 23:29)
-		☐ Déchiffrement en ASM
-		☐ Faire le chiffrement grâce à un fork
+		☐ Crypter également la section .data
+		☐ Décrypter également la section .data
+		☐ Faire plusieurs algorithmes
+			☐ xor
+				☐ xor 8
+				☐ xor 16
+				☐ xor 32
+			☐ rc4
+			☐ rc5
+			☐ rc6
+
+	Test:
+		☐ Faire tout plein de tests
+			☐ https://hub.docker.com/_/ubuntu
+			☐ https://hub.docker.com/_/alpine
+			☐ https://hub.docker.com/_/centos
+			☐ https://hub.docker.com/_/debian
+			☐ https://hub.docker.com/_/fedora
+			☐ https://hub.docker.com/r/archlinux/base
+			☐ https://hub.docker.com/r/kalilinux/kali-linux-docker
 
 	Injection:
 		☐ ajouter la possibilite de rajouter un PT_LOAD si la place est insuffisante.
