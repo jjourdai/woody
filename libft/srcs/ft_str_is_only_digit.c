@@ -30,3 +30,19 @@ t_bool			ft_str_is_only_digit(char *str)
 	}
 	return (1);
 }
+
+t_bool			str_is_hexa(char *str)
+{
+	int	i;
+	char	base[] = "0123456789ABCDEFabcdef";
+
+	if (!str)
+		return 0;
+	i = 0;
+	while (str[i]) {
+		if (strchr(base, str[i]) == NULL)
+			return 0;
+		i++;
+	}
+	return (1);
+}

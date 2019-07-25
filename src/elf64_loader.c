@@ -1,6 +1,12 @@
 #include "woody.h"
 #include "libft.h"
 
+const char		*elf_class[] = {
+	[ELFCLASSNONE] = "ELFCLASSNONE",
+	[ELFCLASS32] = "ELFCLASS32",
+	[ELFCLASS64] = "ELFCLASS64",
+};
+
 t_bool	elf64_loader(t_elf64 *elf, const char *filename)
 {
 	int			fd;
@@ -10,50 +16,30 @@ t_bool	elf64_loader(t_elf64 *elf, const char *filename)
 	uint8_t		arch;
 
 	ft_bzero(elf, sizeof(*elf));
-	if ((fd = open(filename, O_RDONLY)) < 0)
-	{
-		dprintf(2, "Open failed\n");
-		return (FALSE);
-	}
-	if (fstat(fd, &buf) < 0)
-	{
-		dprintf(2, "fstat failed\n");
-		close(fd);
-		return (FALSE);
-	}
-	if ((mem = mmap(0, buf.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-	{
-		dprintf(2, "mmap failed\n");
-		close(fd);
-		return (FALSE);
-	}
+	fd = __ASSERTI(-1, open(filename, O_RDONLY), strerror(errno)); 
+	__ASSERTI(-1, fstat(fd, &buf), strerror(errno)); 
+	__ASSERT(MAP_FAILED, mem = mmap(0, buf.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0), strerror(errno)); 
 	close(fd);
 	hdr = (Elf64_Ehdr *)mem;
-	if (*(uint32_t *)mem != ELF_MAGIC)
-	{
-		dprintf(2, "Unknown magic number -- '%x'\n", *(uint32_t *)mem);
+	if (*(uint32_t *)mem != ELF_MAGIC) {
 		munmap(mem, buf.st_size);
-		return (FALSE);
+		__FATAL(UNKNOWN_MAGIC, BINARY_NAME, *(uint32_t *)mem);
 	}
 	arch = hdr->e_ident[EI_CLASS];
 	if (arch == ELFCLASS64) {
 		if ((hdr->e_type == ET_EXEC || hdr->e_type == ET_DYN || hdr->e_type == ET_REL) == FALSE) {
-			dprintf(2,
-				"file object not supported need ET_DYN, ET_EXEC or ET_REL -- '%s'\n",
-				(hdr->e_type < file_object_type_len) ? file_object_type[hdr->e_type] : "UNKNOWN_TYPE corrupted file");
 			munmap(mem, buf.st_size);
-			return (FALSE);
+			__FATAL(ERR_FILE_OBJ, BINARY_NAME, ((hdr->e_type < file_object_type_len) ?\
+				file_object_type[hdr->e_type] : "UNKNOWN_TYPE corrupted file"));
 		}
 	}
 	else if (arch == ELFCLASS32) {
-		dprintf(2, "Architecture X86_32 not handled\n");
 		munmap(mem, buf.st_size);
-		return (FALSE);
+		__FATAL(NOT_HANDLE_ARCH_32, BINARY_NAME, elf_class[arch]);
 	}
 	else {
-		dprintf(2, "binary arch unknown -- '%x'\n", arch);
 		munmap(mem, buf.st_size);
-		return (FALSE);
+		__FATAL(UNKNOWN_ARCH_TYPE, BINARY_NAME, "Unknown arch type");
 	}
 	elf->mem = mem;
 	elf->len = buf.st_size;

@@ -29,9 +29,12 @@
 
 # define COUNT_OF(ptr) (sizeof(ptr) / sizeof((ptr)[0]))
 # define OFFSETOF(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
-# define USAGE BINARY_NAME" [--help] [filename ...]"
+# define USAGE BINARY_NAME" [--help] [--key HEXA_KEY] [--cipher CIPHER_TYPE] filename\n"
 
-# define HELPER "--help, -h Print this help screen\n"
+# define HELPER "--help, -h Print this help screen\n"\
+		"--key, -k  give a key\n"\
+		"--cipher, -c [xor32 | xor16 | xor8 | rc4 | rc5 | rc6]\n"\
+			"xor32 is default\n"
 
 # define __FATAL(X, ...) handle_error(__LINE__, __FILE__, FATAL, X, __VA_ARGS__)
 # define __ASSERTI(ERR_VALUE, RETURN_VALUE, STRING) x_int(ERR_VALUE, RETURN_VALUE, STRING, __FILE__, __LINE__)
@@ -42,7 +45,7 @@
 # define UNSET(x, n)	(x & (~n))
 # define ISSET(x, n)	(x & n)
 
-# define BINARY_NAME "woody"
+# define BINARY_NAME "woody_woodpacker"
 # define DEBUG 1
 # define DUP_OFF 0
 # define DUP_ON 1
@@ -53,6 +56,17 @@
 
 enum	options {
 	F_HELP = (1 << 0),
+	F_KEY = (1 << 1),
+	F_CIPHER = (1 << 2),
+};
+
+enum	cipher_type {
+	XOR_32 = 0,
+	XOR_16,
+	XOR_8,
+	RC4,
+	RC5,
+	RC6,
 };
 
 enum	error {
@@ -65,6 +79,9 @@ enum	error {
 	NOT_HANDLE_ARCH_32,
 	UNKNOWN_MAGIC,
 	ERR_FILE_OBJ,
+	KEY_NOT_HEXA,
+	KEY_TOO_LONG,
+	UNKNOWN_CIPHER_TYPE,
 };
 
 typedef struct parameters {
@@ -85,6 +102,8 @@ struct woody {
 	struct {
 		uint16_t	value;
 		t_list		*filename;
+		uint16_t	cipher_type;
+		uint32_t	key;
 	} flag;
 	t_shellcode			*shellcode;
 	t_shellcode_meta	shellcode_meta;
@@ -119,8 +138,6 @@ struct woody			g_env;
 
 extern const char		*file_object_type[];
 extern const size_t		file_object_type_len;
-extern const char		*elf_class[];
-extern const size_t		elf_class_len;
 extern const char		*program_header_type[];
 extern const size_t		program_header_type_len;
 extern const char		*section_header_type[];

@@ -158,5 +158,7 @@ char				*ft_strcut(char *str, char c);
 int					get_next_line(const int fd, char **line);
 uint16_t			compute_checksum(void *data, size_t size);
 t_bool				ft_str_is_only_digit(char *str);
+t_bool				str_is_hexa(char *str);
+uint64_t        swap_bigendian_littleendian(uint64_t number, size_t sizeoff);
 
 #endif

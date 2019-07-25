@@ -36,7 +36,7 @@ void		write_data(t_elf64 *elf)
 	// size_t	len;
 
 	// len = remove_sections_header(elf);
-	int fd = __ASSERTI(-1, open("woody", O_WRONLY | O_TRUNC | O_CREAT, 0755), "Open failed");
+	int fd = __ASSERTI(-1, open("woody", O_WRONLY | O_TRUNC | O_CREAT, 0755), strerror(errno));
 	write(fd, elf->mem, elf->len);
 	close(fd);
 }
@@ -159,7 +159,7 @@ void	inject_code(t_elf64 *elf)
 			printf("%02x", g_env.shellcode->content[i]);
 		}
 		printf("\n");
-		xor32(elf->mem + elf->offset_text, elf->len_text, 0x12345678);
+		xor32(elf->mem + elf->offset_text, elf->len_text, swap_bigendian_littleendian(g_env.flag.key, 4));
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;
@@ -171,8 +171,7 @@ void		pack_this_file(char *filename)
 {
 	t_elf64		elf;
 
-	if (elf64_loader(&elf, filename) == FALSE)
-		return ;
+	elf64_loader(&elf, filename);
 	browse_all_program_header(&elf);
 	browse_all_program_search_text(&elf);
 	// display_section_header(&elf);
@@ -186,13 +185,14 @@ void		pack_this_file(char *filename)
 
 int		main(int argc, char **argv)
 {
-	if (argc < 2) {
-		fprintf(stderr, "Usage: Need at least one filename\n");
-		exit(EXIT_FAILURE);
-	}
 	ft_bzero(&g_env, sizeof(g_env));
+	g_env.flag.cipher_type = XOR_32;
 	t_list *tmp;
 	get_options(argc, argv);
+	if (list_size(g_env.flag.filename) < 1) {
+		fprintf(stderr, USAGE);
+		exit(EXIT_FAILURE);
+	}
 //	init_sigaction();
 
 	g_env.shellcode = sh_alloc();
@@ -202,7 +202,8 @@ int		main(int argc, char **argv)
 	// sh_test(g_env.shellcode);
 	// sh_mprotect_text_writable(g_env.shellcode);
 	// sh_mprotect_text_executable(g_env.shellcode);
-	if (sh_xor32(g_env.shellcode, 0x78563412) == FALSE)
+	printf("jaffiche la clef %x\n", g_env.flag.key);
+	if (sh_xor32(g_env.shellcode, g_env.flag.key) == FALSE)
 	{
 		exit(EXIT_FAILURE);
 	}

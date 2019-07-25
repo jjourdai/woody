@@ -10,14 +10,6 @@ const char		*file_object_type[] = {
 
 const size_t	file_object_type_len = COUNT_OF(file_object_type);
 
-const char		*elf_class[] = {
-	[ELFCLASSNONE] = "ELFCLASSNONE",
-	[ELFCLASS32] = "ELFCLASS32",
-	[ELFCLASS64] = "ELFCLASS64",
-};
-
-const size_t	elf_class_len = COUNT_OF(elf_class);
-
 const char		*program_header_type[] = {
 	[PT_NULL] = "PT_NULL",
 	[PT_LOAD] = "PT_LOAD",

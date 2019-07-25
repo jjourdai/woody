@@ -13,8 +13,45 @@
 #include "woody.h"
 #include "colors.h"
 
+void	get_key(char *arg, void *var)
+{
+	size_t length = 0;
+
+	if (str_is_hexa(arg) == 1 && (length = ft_strlen(arg)) <= 8) {
+		*((uint32_t*)var) = ft_atoi_base(arg, "0123456789ABCDEF");
+	} else {
+		if  (length > 8)
+			__FATAL(KEY_TOO_LONG, BINARY_NAME, arg);
+		else
+			__FATAL(KEY_NOT_HEXA, BINARY_NAME, arg);
+	}
+}
+
+
+static char *cipher_type[] = {
+	[XOR_32] = "xor32",
+	[XOR_16] = "xor16",
+	[XOR_8] = "xor8",
+	[RC4] = "rc4",
+	[RC5] = "rc5",
+	[RC6] = "rc6",
+};
+
+void	get_cipher_type(char *arg, void *var)
+{
+	for (uint32_t i = 0; i < COUNT_OF(cipher_type); i++) {
+		if (ft_strcmp(cipher_type[i], arg) == 0) {
+			*((uint16_t*)var) = i;
+			return ;
+		}
+	}
+	__FATAL(UNKNOWN_CIPHER_TYPE, BINARY_NAME, arg);
+}
+
 static struct params_getter options[] = {
 	{"help", 'h', F_HELP, NULL, NULL, DUP_OFF},
+	{"key", 'k', F_KEY, get_key, &g_env.flag.key, DUP_OFF},
+	{"cipher", 'c', F_CIPHER, get_cipher_type, &g_env.flag.cipher_type, DUP_OFF},
 };
 
 void	longname_opt(char **argv, uint32_t *flag, int *i)
