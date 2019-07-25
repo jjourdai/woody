@@ -6,7 +6,7 @@
 #    By: polooo <polooo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/04/21 18:54:06 by polooo           ###   ########.fr        #
+#    Updated: 2019/07/25 10:36:17 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@ mkdir -p $(shell dirname $@)
 	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) -c $<
 
-include $(DEP)
+-include $(DEP)
 
 .PHONY: clean
 clean:
