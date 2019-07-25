@@ -1,7 +1,7 @@
 
 LAUNCH = ./tests/scripts/launch.sh
 
-all: ubuntu debian
+all: ubuntu debian fedora archlinux kalilinux
 
 .PHONY: ubuntu
 ubuntu:
@@ -10,3 +10,15 @@ ubuntu:
 .PHONY: debian
 debian:
 	$(LAUNCH) debian
+
+.PHONY: fedora
+fedora:
+	$(LAUNCH) fedora
+
+.PHONY: archlinux
+archlinux:
+	$(LAUNCH) archlinux
+
+.PHONY: kalilinux
+kalilinux:
+	$(LAUNCH) kalilinux

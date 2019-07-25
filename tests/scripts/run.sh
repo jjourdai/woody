@@ -3,7 +3,7 @@
 set -eu
 
 PROG_DIR="./tests/progs/"
-PROGS=$(find ${PROG_DIR} -name "*.c" | sort)
+PROGS=$(ls "${PROG_DIR}")
 
 _RED=$(tput setaf 1 2> /dev/null || echo "")
 _GREEN=$(tput setaf 2 2> /dev/null || echo "")
@@ -37,9 +37,13 @@ process() {
 	if [ "$WOODY" = "0" ]; then TAG1="${_RED}KO${_END}"; fi
 	if [ "$DIFF" = "0" ]; then TAG2="${_RED}KO${_END}"; fi
 	printf "WOODY: %s, DIFF: %s\\n" "$TAG1" "$TAG2"
+	if [ "$WOODY" = "0" -o "$DIFF" = "0" ]; then
+		exit 1
+	fi
 }
 
 for file in ${PROGS}; do
+	file="${PROG_DIR}${file}"
 	gcc -o tested "${file}"
 	process "./tested" "$(basename "${file}")" ""
 	rm -f tested
@@ -56,4 +60,4 @@ process /bin/uname "/bin/uname -a" "-a"
 process /bin/true "/bin/true" ""
 process /usr/bin/find "/usr/bin/find /usr" "/usr"
 process /usr/bin/wc "/usr/bin/wc /usr/include/stdlib.h" "/usr/include/stdlib.h"
-process /usr/bin/env "/usr/bin/env" ""
+process /usr/bin/env "/usr/bin/env" "-u _"

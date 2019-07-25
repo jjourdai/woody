@@ -22,11 +22,10 @@ Core:
 	Test:
 		☐ Faire tout plein de tests
 			✔ https://hub.docker.com/_/ubuntu @done(19-07-23 23:34)
-			☐ https://hub.docker.com/_/centos
 			☐ https://hub.docker.com/_/debian
-			☐ https://hub.docker.com/_/fedora
-			☐ https://hub.docker.com/r/archlinux/base
-			☐ https://hub.docker.com/r/kalilinux/kali-linux-docker
+			✔ https://hub.docker.com/_/fedora @done(19-07-25 15:44)
+			✔ https://hub.docker.com/r/archlinux/base @done(19-07-25 16:15)
+			✔ https://hub.docker.com/r/kalilinux/kali-linux-docker @done(19-07-25 16:24)
 
 	Injection:
 		☐ ajouter la possibilite de rajouter un PT_LOAD si la place est insuffisante.

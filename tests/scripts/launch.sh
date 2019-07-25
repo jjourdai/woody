@@ -3,7 +3,10 @@
 set -eux
 
 UBUNTUS="xenial bionic cosmic disco eoan"
-DEBIANS="jessie stretch buster"
+DEBIANS="stretch buster"
+FEDORAS="26 27 28 29 30 31"
+ARCHLINUX="base"
+KALILINUX="base"
 DIST=""
 
 LIST=""
@@ -16,6 +19,18 @@ case $1 in
 	debian)
 		DIST="debian"
 		LIST="${DEBIANS}"
+		;;
+	fedora)
+		DIST="fedora"
+		LIST="${FEDORAS}"
+		;;
+	archlinux)
+		DIST="archlinux"
+		LIST="${ARCHLINUX}"
+		;;
+	kalilinux)
+		DIST="kalilinux"
+		LIST="${KALILINUX}"
 		;;
 	*)
 		exit 1
