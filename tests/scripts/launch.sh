@@ -4,7 +4,6 @@ set -eux
 
 UBUNTUS="xenial bionic cosmic disco eoan"
 DEBIANS="jessie stretch buster"
-ALPINES="3.7 3.8 3.9 3.10 edge"
 DIST=""
 
 LIST=""
@@ -17,10 +16,6 @@ case $1 in
 	debian)
 		DIST="debian"
 		LIST="${DEBIANS}"
-		;;
-	alpine)
-		DIST="alpine"
-		LIST="${ALPINES}"
 		;;
 	*)
 		exit 1

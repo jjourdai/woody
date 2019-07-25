@@ -1,7 +1,7 @@
 
 LAUNCH = ./tests/scripts/launch.sh
 
-all: ubuntu alpine
+all: ubuntu debian
 
 .PHONY: ubuntu
 ubuntu:
@@ -10,7 +10,3 @@ ubuntu:
 .PHONY: debian
 debian:
 	$(LAUNCH) debian
-
-.PHONY:
-alpine:
-	$(LAUNCH) alpine
