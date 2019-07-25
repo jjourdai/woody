@@ -1,10 +1,12 @@
-#ifndef RC5_H
-#define RC5_H
+#ifndef ENCRYPT_H
+#define ENCRYPT_H
 
 #include <stdint.h>
 #include <stddef.h>
 
-#include <stdio.h>
+
+/* XOR */
+void	xor32(void *in, size_t in_len, uint32_t key);
 
 /* sources:
 **
@@ -15,6 +17,8 @@
 **	https://www.geeksforgeeks.org/computer-network-rc5-encryption-algorithm/
 **
 */
+
+/* RC5 */
 
 void		rc5_encrypt(void *data, size_t len);
 
@@ -40,5 +44,6 @@ void		rc5_encrypt(void *data, size_t len);
 
 #define ROTL(x, s)	((uint64_t)(((x) << (s)) | ((x) >> (64 - (s)))))
 #define ROTR(x, s)	((uint64_t)(((x) >> (s)) | ((x) << (64 - (s)))))
+
 
 #endif

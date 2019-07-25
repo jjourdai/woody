@@ -1,7 +1,8 @@
 #include "woody.h"
 // #include "colors.h"
 #include "shellcode.h"
-#include "xor.h"
+#include "encrypt.h"
+#include "colors.h"
 
 /*
 void		signal_handler(int signal)
@@ -55,7 +56,6 @@ void		search_free_space(t_elf64 *elf, Elf64_Phdr *phdr)
 	} else {
 		spt_load = phdr;
 		Elf64_Off space = spt_load->p_offset - (fpt_load->p_memsz + fpt_load->p_offset);
-		printf("%lx %lx %lx\n", spt_load->p_offset , fpt_load->p_memsz , fpt_load->p_offset);
 		printf("Free space = '%lx' '%lu'\n", space, space);
 		if (elf->free_space < space) {
 			elf->free_space = space;
@@ -69,15 +69,19 @@ void	browse_all_program_header(t_elf64 *elf)
 {
 	Elf64_Phdr	*phdr;
 
+	/*
 	printf("file object type := %s\n", file_object_type[elf->header->e_type]);
 	printf("entry %lX\n", elf->header->e_entry);
 	printf("program header number %d\n", elf->header->e_phnum);
+	*/
 	phdr = elf->mem + elf->header->e_phoff;
 	for (int i = 0; i < elf->header->e_phnum; i++) {
+		/*
 		if (phdr->p_type < program_header_type_len)
 			printf("%s\n", program_header_type[phdr->p_type]);
 		else 
 			printf("Unknown Program header\n");
+		*/
 		if (phdr->p_type == PT_LOAD)
 		{
 			search_free_space(elf, phdr);
@@ -146,8 +150,6 @@ void	inject_code(t_elf64 *elf)
 		} else {
 			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_vaddr) - len;
 			elf->header->e_entry = elf->target->p_memsz + elf->target->p_vaddr;
-			printf("%x\n", g_env.shellcode_meta.entrypoint);
-			printf("e_entry %lx\n", elf->header->e_entry);
 			g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - (elf->target->p_memsz + elf->target->p_vaddr) - len;
 		}
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
@@ -159,7 +161,7 @@ void	inject_code(t_elf64 *elf)
 			printf("%02x", g_env.shellcode->content[i]);
 		}
 		printf("\n");
-		xor32(elf->mem + elf->offset_text, elf->len_text, swap_bigendian_littleendian(g_env.flag.key, 4));
+		xor32(elf->mem + elf->offset_text, elf->len_text, swap_bigendian_littleendian(g_env.key.xor32, 4));
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;
@@ -183,18 +185,53 @@ void		pack_this_file(char *filename)
 	munmap(elf.mem, elf.len);
 }
 
+void	atoi_key(void *data, size_t size, char *key)
+{
+	uint32_t	*cast = data;
+	size_t		size_str;
+	
+	if ((size_str = ft_strlen(key)) > size * 2) {
+		fprintf(stderr, "Warning !!! Given key to long it will be truncate\n"); 
+	}
+	size_str -= 8;
+	int i = 0;
+	do {
+		cast[i] = ft_atoi_base(key + size_str, "0123456789ABCDEF");
+		key[size_str] = 0;
+		i++;
+		size_str -= 8;
+	} while (i < size / 4);
+}
+
+void	verify_key(void *data, size_t size)
+{
+	if (g_env.flag.value & F_KEY) {
+		atoi_key(data, size, g_env.flag.key_str);
+	} else {
+		get_random_data(data, size);
+	}
+	printf(RED_TEXT("Encryption key : '0x"));
+	int i = 0;
+	do {
+		printf(RED_TEXT("%hhx"), ((uint8_t*)data)[i]);
+	} while (++i < size);
+	printf(RED_TEXT("'\n"));
+}
+
 int		main(int argc, char **argv)
 {
 	ft_bzero(&g_env, sizeof(g_env));
 	g_env.flag.cipher_type = XOR_32;
-	t_list *tmp;
 	get_options(argc, argv);
-	if (list_size(g_env.flag.filename) < 1) {
+	if (g_env.flag.filename == NULL) {
 		fprintf(stderr, USAGE);
 		exit(EXIT_FAILURE);
+	}	
+	if (!(g_env.flag.value & F_CIPHER)) {
+		g_env.flag.cipher_type = DEFAULT_ALGO;
 	}
-//	init_sigaction();
 
+//	init_sigaction();
 	g_env.shellcode = sh_alloc();
 	sh_regs_save(g_env.shellcode);
 	sh_initframe(g_env.shellcode);
@@ -202,23 +239,31 @@ int		main(int argc, char **argv)
 	// sh_test(g_env.shellcode);
 	// sh_mprotect_text_writable(g_env.shellcode);
 	// sh_mprotect_text_executable(g_env.shellcode);
-	printf("jaffiche la clef %x\n", g_env.flag.key);
-	if (sh_xor32(g_env.shellcode, g_env.flag.key) == FALSE)
-	{
-		exit(EXIT_FAILURE);
+	switch (g_env.flag.cipher_type) {
+		case XOR_32:
+			verify_key(&g_env.key.xor32, sizeof(g_env.key.xor32));
+			sh_xor32(g_env.shellcode, g_env.key.xor32);
+			break;
+		case XOR_16:
+			verify_key(&g_env.key.xor16, sizeof(g_env.key.xor16));
+			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			break;
+		case XOR_8:
+			verify_key(&g_env.key.xor8, sizeof(g_env.key.xor8));
+			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			break;
+		case RC5:
+			verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
+			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			break;
 	}
 	sh_print(g_env.shellcode, "....WOODY....\n", 14);
 	sh_endframe(g_env.shellcode);
 	sh_regs_recover(g_env.shellcode);
 	sh_jump(g_env.shellcode);
 
-	/* pack all file got in argv  */
-	tmp = g_env.flag.filename;
-	while (tmp) {
-		printf("Current filename : %s\n", (char*)tmp->content);
-		pack_this_file((char*)tmp->content);
-		tmp = tmp->next;
-	}
+	printf("filename : %s\n", g_env.flag.filename);
+	pack_this_file(g_env.flag.filename);
 	sh_free(g_env.shellcode);
 	return (EXIT_SUCCESS);
 }

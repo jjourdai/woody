@@ -1,4 +1,4 @@
-#include "rc5.h"
+#include "encrypt.h"
 #include "libft.h"
 
 static void	init_S_array(uint64_t S[S_SIZE], uint8_t random_key[KEY_SIZE])

@@ -51,6 +51,9 @@
 # define DUP_ON 1
 # define FATAL 1
 # define ELF_MAGIC 0x464c457f
+# define RC5_KEY_SIZE 16
+
+# define DEFAULT_ALGO XOR_32
 
 # define TEXT_NAME	".text"
 
@@ -98,13 +101,21 @@ struct params_getter {
 	uint8_t			dup;
 };
 
+union key {
+	uint8_t xor8;
+	uint16_t xor16;
+	uint32_t xor32;
+	uint8_t rc5[RC5_KEY_SIZE]; 
+};
+
 struct woody {
 	struct {
 		uint16_t	value;
-		t_list		*filename;
+		char		*filename;
 		uint16_t	cipher_type;
-		uint32_t	key;
+		char		*key_str;
 	} flag;
+	union key key;
 	t_shellcode			*shellcode;
 	t_shellcode_meta	shellcode_meta;
 };
@@ -121,8 +132,9 @@ typedef struct	s_elf64
 }				t_elf64;
 
 /* params.c */
-t_list	*get_params(char **argv, int argc, uint32_t *flag);
+char	*get_params(char **argv, int argc, uint32_t *flag);
 void	get_options(int argc, char **argv);
+void    get_random_data(void *buffer, size_t size);
 
 /* error.c */
 void	handle_error(uint32_t line, char *file, t_bool fatal, uint32_t error_code,  ...);

@@ -13,18 +13,23 @@
 #include "woody.h"
 #include "colors.h"
 
+void 	get_random_data(void *buffer, size_t size)
+{
+	int		fd;
+
+	if ((fd = open("/dev/urandom", O_RDONLY)) == -1)
+		exit(fd);
+	read(fd, buffer, size);
+	close(fd);
+	return ;
+}
+
 void	get_key(char *arg, void *var)
 {
-	size_t length = 0;
-
-	if (str_is_hexa(arg) == 1 && (length = ft_strlen(arg)) <= 8) {
-		*((uint32_t*)var) = ft_atoi_base(arg, "0123456789ABCDEF");
-	} else {
-		if  (length > 8)
-			__FATAL(KEY_TOO_LONG, BINARY_NAME, arg);
-		else
-			__FATAL(KEY_NOT_HEXA, BINARY_NAME, arg);
+	if (str_is_hexa(arg) == 0) {
+		__FATAL(KEY_NOT_HEXA, BINARY_NAME, arg);
 	}
+	*(char**)var = arg;
 }
 
 
@@ -50,7 +55,7 @@ void	get_cipher_type(char *arg, void *var)
 
 static struct params_getter options[] = {
 	{"help", 'h', F_HELP, NULL, NULL, DUP_OFF},
-	{"key", 'k', F_KEY, get_key, &g_env.flag.key, DUP_OFF},
+	{"key", 'k', F_KEY, get_key, &g_env.flag.key_str, DUP_OFF},
 	{"cipher", 'c', F_CIPHER, get_cipher_type, &g_env.flag.cipher_type, DUP_OFF},
 };
 
@@ -118,13 +123,12 @@ void	shortname_opt(char **argv, uint32_t *flag, int *i)
 	}
 }
 
-t_list		*get_params(char **argv, int argc, uint32_t *flag)
+char		*get_params(char **argv, int argc, uint32_t *flag)
 {
 	int 	i;
-	t_list	*parameters;
+	char	*filename;
 
 	i = 0;
-	parameters = NULL;
 	while (++i < argc)
 	{
 		if (ft_strncmp(argv[i], "--", 2) == 0) {
@@ -132,11 +136,10 @@ t_list		*get_params(char **argv, int argc, uint32_t *flag)
 		} else if (argv[i][0] == '-') {
 			shortname_opt(argv, flag, &i);	
 		} else {
-			list_push(&parameters, argv[i], strlen(argv[i]) + 1);
-		//	__FATAL(UNDEFINED_PARAMETER, BINARY_NAME, argv[i]);
+			filename = argv[i];
 		}
 	}
-	return (parameters);
+	return (filename);
 }
 
 void	get_options(int argc, char **argv)

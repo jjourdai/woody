@@ -14,6 +14,7 @@ t_bool	elf64_loader(t_elf64 *elf, const char *filename)
 	void		*mem;
 	Elf64_Ehdr	*hdr;
 	uint8_t		arch;
+	uint32_t	magic;
 
 	ft_bzero(elf, sizeof(*elf));
 	fd = __ASSERTI(-1, open(filename, O_RDONLY), strerror(errno)); 
@@ -21,9 +22,10 @@ t_bool	elf64_loader(t_elf64 *elf, const char *filename)
 	__ASSERT(MAP_FAILED, mem = mmap(0, buf.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0), strerror(errno)); 
 	close(fd);
 	hdr = (Elf64_Ehdr *)mem;
+	magic = *(uint32_t *)mem;
 	if (*(uint32_t *)mem != ELF_MAGIC) {
 		munmap(mem, buf.st_size);
-		__FATAL(UNKNOWN_MAGIC, BINARY_NAME, *(uint32_t *)mem);
+		__FATAL(UNKNOWN_MAGIC, BINARY_NAME, magic);
 	}
 	arch = hdr->e_ident[EI_CLASS];
 	if (arch == ELFCLASS64) {
