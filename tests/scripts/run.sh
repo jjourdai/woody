@@ -14,13 +14,14 @@ make re
 process() {
 	exec="$1"
 	name="$2"
+	args="$3"
 	DIFF=1
 	WOODY=1
 
-	printf "===== %-30s : " "${name}"
-	"./${exec}" > /tmp/a 2>&1
-	./woody_woodpacker "./${exec}" > /dev/null 2>&1
-	./woody > /tmp/b 2>&1
+	printf "===== %-40s : " "${name}"
+	${exec} $args > /tmp/a 2>&1
+	./woody_woodpacker "${exec}" > /dev/null 2>&1
+	./woody $args > /tmp/b 2>&1
 	LINE=$(head -n 1 < /tmp/b)
 	tail -n +2 < /tmp/b > /tmp/c
 	if [ ! "${LINE}" = "....WOODY...." ]; then
@@ -40,9 +41,19 @@ process() {
 
 for file in ${PROGS}; do
 	gcc -o tested "${file}"
-	process tested "$(basename "${file}")"
+	process "./tested" "$(basename "${file}")" ""
 	rm -f tested
 	gcc -no-pie -o tested "${file}"
-	process tested "$(basename "${file}") -no-pie"
+	process "./tested" "$(basename "${file}") -no-pie" ""
 	rm -f tested
 done
+
+process /bin/ls "/bin/ls /bin /usr/bin" "/bin /usr/bin"
+process /bin/date "/bin/date" ""
+process /bin/grep "/bin/grep 'include' -R /usr/include" "include -R /usr/include"
+process /bin/grep "/bin/grep 'define' -R /usr/include" "define -R /usr/include"
+process /bin/uname "/bin/uname -a" "-a"
+process /bin/true "/bin/true" ""
+process /usr/bin/find "/usr/bin/find /usr" "/usr"
+process /usr/bin/wc "/usr/bin/wc /usr/include/stdlib.h" "/usr/include/stdlib.h"
+process /usr/bin/env "/usr/bin/env" ""

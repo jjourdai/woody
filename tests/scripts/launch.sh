@@ -30,9 +30,8 @@ esac
 for img in $LIST; do
 	docker build \
 		--tag "${DIST}-${img}" \
-		--build-arg "ARCH=${DIST}:${img}" \
-		--build-arg ARCH_TYPE=${DIST} \
-		-f tests/scripts/Dockerfile \
+		--build-arg "DIST=${img}" \
+		-f "tests/scripts/dockerfiles/${DIST}.Dockerfile" \
 		.
 	docker run --rm -t "${DIST}-${img}"
 done
