@@ -2,6 +2,10 @@
 #include "libft.h"
 #include "woody.h"
 
+#ifndef MAP_ANON
+# define MAP_ANON 0x20
+#endif
+
 t_shellcode		*sh_alloc(void)
 {
 	t_shellcode		*ptr;
