@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/25 14:38:04 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/25 15:14:28 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ CC = gcc
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 #CFLAGS = -Wall -Wextra -Werror
 # Weverything
-CFLAGS = -MD -Wall -Wextra -g
+CFLAGS = -MD -std=gnu11 -Wall -Wextra -g
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 DEP_NAME = $(SRC_NAME:.c=.d)
