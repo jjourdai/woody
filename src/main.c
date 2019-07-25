@@ -194,7 +194,7 @@ void	atoi_key(void *data, size_t size, char *key)
 		fprintf(stderr, "Warning !!! Given key to long it will be truncate\n"); 
 	}
 	size_str -= 8;
-	int i = 0;
+	size_t i = 0;
 	do {
 		cast[i] = ft_atoi_base(key + size_str, "0123456789ABCDEF");
 		key[size_str] = 0;
@@ -211,7 +211,7 @@ void	verify_key(void *data, size_t size)
 		get_random_data(data, size);
 	}
 	printf(RED_TEXT("Encryption key : '0x"));
-	int i = 0;
+	size_t i = 0;
 	do {
 		printf(RED_TEXT("%hhx"), ((uint8_t*)data)[i]);
 	} while (++i < size);
