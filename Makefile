@@ -85,4 +85,10 @@ fclean: clean
 	rm -fv woody
 
 .PHONY: re
-re: fclean all
+re:
+	make fclean
+	make all
+
+.PHONY: test
+test:
+	make -f test.mk all
