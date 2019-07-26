@@ -3,13 +3,27 @@ pipeline {
     stages {
         stage('Test woody on Ubuntu') {
             steps {
+		sh 'tests/scripts/launch.sh ubuntu'
+            }
+        }
+	stage('Test woody on fedora') {
+            steps {
 		sh 'tests/scripts/launch.sh fedora'
             }
         }
-	stage('stage 2') {
+	stage('Test woody on debian') {
             steps {
-                echo "stage 2"
-		sh 'echo "stage 2"'
+		sh 'tests/scripts/launch.sh debian'
+            }
+        }
+	stage('Test woody on archlinux') {
+            steps {
+		sh 'tests/scripts/launch.sh archlinux'
+            }
+        }
+	stage('Test woody on kalilinux') {
+            steps {
+		sh 'tests/scripts/launch.sh kalilinux'
             }
         }
     }
