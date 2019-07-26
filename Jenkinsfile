@@ -6,9 +6,11 @@ pipeline {
                 echo "On Non-Sequential Stage"
 		sh 'echo "test"'
             }
-	    steps {
-                echo "On Non-Sequential Stage"
-		sh 'echo "test"'
+        }
+	stage('stage 2') {
+            steps {
+                echo "stage 2"
+		sh 'echo "stage 2"'
             }
         }
     }
