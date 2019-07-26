@@ -220,6 +220,7 @@ void	verify_key(void *data, size_t size)
 
 int		main(int argc, char **argv)
 {
+	return 1;
 	ft_bzero(&g_env, sizeof(g_env));
 	get_options(argc, argv);
 	if (g_env.flag.filename == NULL) {
