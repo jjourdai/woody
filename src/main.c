@@ -221,7 +221,6 @@ void	verify_key(void *data, size_t size)
 int		main(int argc, char **argv)
 {
 	ft_bzero(&g_env, sizeof(g_env));
-	g_env.flag.cipher_type = XOR_32;
 	get_options(argc, argv);
 	if (g_env.flag.filename == NULL) {
 		fprintf(stderr, USAGE);

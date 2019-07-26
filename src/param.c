@@ -128,6 +128,7 @@ char		*get_params(char **argv, int argc, uint32_t *flag)
 	int 	i;
 	char	*filename;
 
+	filename = NULL;
 	i = 0;
 	while (++i < argc)
 	{
@@ -146,6 +147,7 @@ void	get_options(int argc, char **argv)
 {
 	g_env.flag.filename = get_params(argv, argc, (uint32_t*)&g_env.flag.value);
 	if (g_env.flag.value & F_HELP) {
-		fprintf(stderr, GREEN_TEXT(USAGE) GREEN_TEXT(HELPER)); exit(EXIT_FAILURE);
+		fprintf(stderr, GREEN_TEXT(USAGE) GREEN_TEXT(HELPER));
+		exit(EXIT_SUCCESS);
 	}
 }
