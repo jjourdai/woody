@@ -1,29 +1,22 @@
 pipeline {
-	agent any
-		stages {
-			stage('Test on Woody') {
-				steps {
-					echo 'Hello, Je lance les tests sur woody'
-						sh 'make -f test.mk'
-				}
-			}
-		}
-	post {
-		always {
-			echo 'This will always run'
-		}
-		success {
-			echo 'This will run only if successful'
-		}
-		failure {
-			echo 'This will run only if failed'
-		}
-		unstable {
-			echo 'This will run only if the run was marked as unstable'
-		}
-		changed {
-			echo 'This will run only if the state of the Pipeline has changed'
-				echo 'For example, if the Pipeline was previously failing but is now successful'
-		}
-	}
+    agent any
+    stages {
+        stage('test 1') {
+            steps {
+			echo 'je lance le test 1'
+                }
+	    steps {
+			echo 'fin du test 1'
+                }
+            }
+	stage('test 2') {
+            steps {
+			echo 'je lance le test 2'
+                }
+	    steps {
+			echo 'fin du test 2'
+                }
+            }
+        }
+    }
 }
