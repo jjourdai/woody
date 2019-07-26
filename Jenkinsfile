@@ -1,16 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('ok je recommence a 0') {
+        stage('Test woody on Ubuntu') {
             steps {
-                echo "On Non-Sequential Stage"
-		bash 'echo "test"'
+		sh 'tests/scripts/launch.sh fedora'
             }
         }
 	stage('stage 2') {
             steps {
                 echo "stage 2"
-		bash 'echo "stage 2"'
+		sh 'echo "stage 2"'
             }
         }
     }
