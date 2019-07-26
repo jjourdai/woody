@@ -220,6 +220,14 @@ void	verify_key(void *data, size_t size)
 
 int		main(int argc, char **argv)
 {
+	uint8_t	key[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+	char	data[256];
+
+	for(size_t i = 0; i < 256; ++i)
+		data[i] = i;
+
+	rc5_encrypt(data, 256, key);
+	return (0);
 	ft_bzero(&g_env, sizeof(g_env));
 	get_options(argc, argv);
 	if (g_env.flag.filename == NULL) {
