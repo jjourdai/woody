@@ -1,6 +1,7 @@
 
 LAUNCH = ./tests/scripts/launch.sh
 
+.PHONY: all
 all: ubuntu debian fedora archlinux kalilinux
 
 .PHONY: ubuntu
