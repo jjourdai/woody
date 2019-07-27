@@ -21,25 +21,28 @@ static void	init_S_array(uint64_t S[S_SIZE], uint8_t random_key[KEY_SIZE])
 		L[i / 8] += tmp[0];
 		// printf("%016lx\n", L[i / 8]);
 	}
-	// tmp[0] = 3 * ((S_SIZE < L_SIZE) ? L_SIZE : S_SIZE);
-	tmp[0] = 2;
+	tmp[0] = 3 * ((S_SIZE < L_SIZE) ? L_SIZE : S_SIZE);
+	// tmp[0] = 2;
 	tmp[1] = 0;
 	tmp[2] = 0;
 	reg[0] = 0;
 	reg[1] = 0;
 	while (tmp[0]-- > 0)
 	{
+		// printf("tmp[0] : %d\n", tmp[0]);
 		reg[0] = ROTL(S[tmp[1]] + reg[0] + reg[1], 3);
-		printf("%016lx\n", S[tmp[1]] + reg[0] + reg[1]);
-		printf("%016lx\n", reg[0]);
+		// printf("A : %016lx\n", S[tmp[1]]);
+		// printf("B : %016lx\n", reg[0]);
 		S[tmp[1]] = reg[0];
 		reg[1] = ROTL(L[tmp[2]] + reg[0] + reg[1], reg[0] + reg[1]);
+		// printf("C : %016lx\n", L[tmp[2]]);
+		// printf("D : %016lx\n", reg[1]);
 		L[tmp[2]] = reg[1];
 		tmp[1] = (tmp[1] + 1) % S_SIZE;
 		tmp[2]++;
 		tmp[2] %= L_SIZE;
-		// printf("%016lx\n", S[tmp[1]]);
-		// printf("%016lx\n", L[tmp[2]]);
+		// printf("E : %016lx\n", tmp[1]);
+		// printf("D : %016lx\n", tmp[2]);
 	}
 }
 
