@@ -53,7 +53,7 @@ void	inject_code(t_elf64 *elf)
 			printf("%02x", g_env.shellcode->content[i]);
 		}
 		printf("\n");
-		// encrypt(elf->mem + elf->offset_text, elf->len_text);
+		encrypt(elf->mem + elf->offset_text, elf->len_text);
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;
@@ -110,7 +110,7 @@ int		main(int argc, char **argv)
 		case RC5:
 			g_env.asm_file = RC5_ASMFILE;
 			verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
-			// sh_rc5(g_env.shellcode, g_env.key.rc5);
+			sh_rc5(g_env.shellcode, g_env.key.rc5);
 			break;
 		default:
 			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);

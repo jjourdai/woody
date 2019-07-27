@@ -409,4 +409,4 @@ rc5:
 		mov		rax, 0
 		mov		rsp, rbp
 		pop		rbp
-		ret
+		; ret
