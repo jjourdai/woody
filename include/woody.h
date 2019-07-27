@@ -116,10 +116,10 @@ union key {
 
 struct woody {
 	struct {
-		uint16_t	value;
 		char		*filename;
-		uint16_t	cipher_type;
 		char		*key_str;
+		uint16_t	value;
+		uint16_t	cipher_type;
 	} flag;
 	union key		key;
 	char			*asm_file;

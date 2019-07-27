@@ -43,5 +43,5 @@ for img in $LIST; do
 		--build-arg "DIST=${img}" \
 		-f "tests/scripts/dockerfiles/${DIST}.Dockerfile" \
 		.
-	docker run --rm -t "${DIST}-${img}"
+	docker run --rm --privileged -t "${DIST}-${img}"
 done

@@ -50,7 +50,7 @@ NAME = woody_woodpacker
 
 CC = gcc
 
-#CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
+#CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer -MD -std=gnu11
 #CFLAGS = -Wall -Wextra -Werror
 # Weverything
 CFLAGS = -MD -std=gnu11 -Wall -Wextra -g

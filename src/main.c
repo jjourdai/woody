@@ -3,14 +3,14 @@
 #include "encrypt.h"
 #include "colors.h"
 
-void		write_data(t_elf64 *elf)
+static void	write_data(t_elf64 *elf)
 {
 	int fd = __ASSERTI(-1, open("woody", O_WRONLY | O_TRUNC | O_CREAT, 0755), strerror(errno));
 	write(fd, elf->mem, elf->len);
 	close(fd);
 }
 
-void	encrypt(uint64_t *addr, size_t length)
+static void	encrypt(uint64_t *addr, size_t length)
 {
 	switch (g_env.flag.cipher_type) {
 		case XOR_32:
@@ -28,7 +28,7 @@ void	encrypt(uint64_t *addr, size_t length)
 	}
 }
 
-void	inject_code(t_elf64 *elf)
+static void	inject_code(t_elf64 *elf)
 {
 	size_t			len;
 	void			*ptr;
@@ -61,7 +61,7 @@ void	inject_code(t_elf64 *elf)
 	}
 }
 
-void		pack_this_file(char *filename)
+static void	pack_this_file(char *filename)
 {
 	t_elf64		elf;
 

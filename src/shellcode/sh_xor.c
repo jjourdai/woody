@@ -18,6 +18,6 @@ t_bool		sh_xor(t_shellcode *sh, uint32_t key, enum xor_size size)
 	sh->off_vmaddr_text_len[0] = sh->len;
 	sh->len += 4;
 	if (sh_file(sh, g_env.asm_file) == FALSE)
-		return (FALSE);
+		__FATAL(SECTION_TEXT_NOT_FOUND, BINARY_NAME, "Not found");
 	return (TRUE);
 }
