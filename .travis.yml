@@ -14,29 +14,29 @@ matrix:
     - name: verifying travis.yml file
       stage: Base
       script:
-        - python3 .travis_gen.py > expected.out
-        - diff .travis.yml expected.out
+        - travis_retry python3 .travis_gen.py > expected.out
+        - travis_retry diff .travis.yml expected.out
     - name: compile woody woodpacker
       stage: Base
       script:
-        - make
+        - travis_retry make
     - name: Testing on ubuntu
       stage: Test
       script:
-        - make -f test.mk ubuntu
+        - travis_retry make -f test.mk ubuntu
     - name: Testing on debian
       stage: Test
       script:
-        - make -f test.mk debian
+        - travis_retry make -f test.mk debian
     - name: Testing on fedora
       stage: Test
       script:
-        - make -f test.mk fedora
+        - travis_retry make -f test.mk fedora
     - name: Testing on archlinux
       stage: Test
       script:
-        - make -f test.mk archlinux
+        - travis_retry make -f test.mk archlinux
     - name: Testing on kalilinux
       stage: Test
       script:
-        - make -f test.mk kalilinux
+        - travis_retry make -f test.mk kalilinux

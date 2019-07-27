@@ -52,7 +52,7 @@ def print_travis_config():
         print("      stage:", stage)
         print("      script:")
         for cmd in cmds:
-            print("        -", cmd)
+            print("        - travis_retry", cmd)
 
     print_header()
     print("matrix:")
