@@ -60,6 +60,7 @@
 # define XOR32_ASMFILE	"asm_files/xor32"
 # define XOR16_ASMFILE	"asm_files/xor16"
 # define XOR8_ASMFILE	"asm_files/xor8"
+# define RC5_ASMFILE	"asm_files/rc5"
 
 enum	options {
 	F_HELP = (1 << 0),
@@ -156,7 +157,6 @@ void	verify_key(void *data, size_t size);
 void    browse_all_program_header(t_elf64 *elf);
 void    search_section_text_metadata(t_elf64 *elf);
 Elf64_Shdr	*search_targeted_section(t_elf64 *elf, char *sect_name);
-
 
 
 // globals

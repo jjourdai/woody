@@ -23,6 +23,7 @@ void	encrypt(uint64_t *addr, size_t length)
 			xor(addr, length, g_env.key.xor8, X8);
 			break;
 		case RC5:
+			rc5_encrypt(addr, length, g_env.key.rc5);
 			break;
 	}
 }
@@ -107,8 +108,9 @@ int		main(int argc, char **argv)
 			sh_xor(g_env.shellcode, g_env.key.xor8, X8);
 			break;
 		case RC5:
-		//	verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
-			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			g_env.asm_file = RC5_ASMFILE;
+			verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
+			sh_rc5(g_env.shellcode, g_env.key.rc5);
 			break;
 		default:
 			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);

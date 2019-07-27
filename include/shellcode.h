@@ -49,5 +49,6 @@ void			sh_jump(t_shellcode *sh);
 // void			sh_mprotect_text_executable(t_shellcode *sh);
 
 t_bool			sh_xor(t_shellcode *sh, uint32_t key, enum xor_size size);
+t_bool			sh_rc5(t_shellcode *sh, uint8_t rc5[KEY_SIZE]);
 
 #endif

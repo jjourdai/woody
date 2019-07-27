@@ -34,6 +34,7 @@ SRC_NAME = \
 		shellcode/sh_initframe.c \
 		shellcode/sh_endframe.c \
 		shellcode/sh_xor.c \
+		shellcode/sh_rc5.c \
 		shellcode/sh_file.c \
 		
 
