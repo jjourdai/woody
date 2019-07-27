@@ -13,7 +13,10 @@ static void	init_S_array(uint64_t S[S_SIZE], uint8_t random_key[KEY_SIZE])
 	for (size_t i = 0; i < L_SIZE; ++i)
 		L[i] = 0;
 	for (size_t i = 0; i < KEY_SIZE; ++i)
-		L[i / 8] += random_key[i] << (8 * (i % 4));
+	{
+		tmp[0] = random_key[i] << (8 * (i % 4));
+		L[i / 8] += tmp[0];
+	}
 	tmp[0] = 3 * ((S_SIZE < L_SIZE) ? L_SIZE : S_SIZE);
 	tmp[1] = 0;
 	tmp[2] = 0;
@@ -67,17 +70,12 @@ static void	cipher(uint64_t S[S_SIZE], uint64_t *AA, uint64_t *BB)
 	*BB = B;
 }
 
-void		rc5_encrypt(void *in, size_t in_len)
+void		rc5_encrypt(void *in, size_t in_len, uint8_t key[KEY_SIZE])
 {
-	uint8_t		random_key[KEY_SIZE]; // TODO randomize
 	uint64_t	S[S_SIZE];
 	uint64_t	*src;
 
-
-	for (uint8_t i = 0; i < KEY_SIZE; ++i)
-		random_key[i] = i * 65537 - 1;
-
-	init_S_array(S, random_key);
+	init_S_array(S, key);
 
 	src = (uint64_t *)in;
 	while (in_len >= 16)

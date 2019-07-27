@@ -27,18 +27,19 @@ void	xor(void *in, size_t in_len, uint32_t key, enum xor_size size);
 
 /* RC5 */
 
-void		rc5_encrypt(void *data, size_t len);
+#define KEY_SIZE		16
+
+void		rc5_encrypt(void *data, size_t len, uint8_t key[KEY_SIZE]);
 
 /*
 **	3 Parameters
 **
 **	NB_ROUNDS	variable
 **	WORD_SIZE	fixed to 8bytes (64bits)
-**	KEY_SIZE	variable (in bytes)
+**	KEY_SIZE	fixed (in bytes)
 */
 
 #define NB_ROUNDS		32
-#define KEY_SIZE		16
 
 // CONSTANTS
 
