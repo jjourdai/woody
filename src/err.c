@@ -10,7 +10,7 @@ char	*error_str[] = {
 	[NOT_HANDLE_ARCH_32] = RED_TEXT("%s: Architecture X86_32 not handled -- '%s'\n"),
 	[UNKNOWN_MAGIC] = RED_TEXT("%s: Unknown magic number -- '%x'\n"),
 	[ERR_FILE_OBJ] = RED_TEXT("%s: file object not supported need ET_DYN or ET_EXEC -- '%s'\n"),
-	[KEY_NOT_HEXA] = RED_TEXT("%s: The given key must be represented in hexadecimal -- '%s'\n"),
+	[KEY_NOT_HEXA] = RED_TEXT("%s: The given key must be represented in upper hexadecimal character -- '%s'\n"),
 	[KEY_TOO_LONG] = RED_TEXT("%s: The given key is too long must be 32bits -- '%s'\n"),
 	[UNKNOWN_CIPHER_TYPE] = RED_TEXT("%s: Unaivailable cipher type -- '%s'\n"),
 };

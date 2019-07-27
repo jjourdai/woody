@@ -19,7 +19,7 @@ SRC_NAME = \
 		consts.c \
 		elf64_loader.c \
 		encrypt/rc5_encrypt.c \
-		encrypt/xor32.c \
+		encrypt/xor.c \
 		shellcode/sh_alloc.c \
 		shellcode/sh_free.c \
 		shellcode/sh_finish.c \
@@ -30,8 +30,9 @@ SRC_NAME = \
 		shellcode/sh_regs_save.c \
 		shellcode/sh_initframe.c \
 		shellcode/sh_endframe.c \
-		shellcode/sh_xor32.c \
+		shellcode/sh_xor.c \
 		shellcode/sh_file.c \
+		
 
 OBJ_PATH = ./.obj/
 

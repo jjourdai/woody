@@ -5,8 +5,15 @@
 #include <stddef.h>
 
 
+enum xor_size {
+	X32 = 4,
+	X16 = 2,
+	X8 = 1,
+
+};
+
 /* XOR */
-void	xor32(void *in, size_t in_len, uint32_t key);
+void	xor(void *in, size_t in_len, uint32_t key, enum xor_size size);
 
 /* sources:
 **

@@ -136,6 +136,23 @@ void	display_section_header(t_elf64 *elf)
 
 }
 
+void	encrypt(uint64_t *addr, size_t length)
+{
+	switch (g_env.flag.cipher_type) {
+		case XOR_32:
+			xor(addr, length, swap_bigendian_littleendian(g_env.key.xor32, X32), X32);
+			break;
+		case XOR_16:
+			xor(addr, length, swap_bigendian_littleendian(g_env.key.xor16, X16), X16);
+			break;
+		case XOR_8:
+			xor(addr, length, g_env.key.xor8, X8);
+			break;
+		case RC5:
+			break;
+	}
+}
+
 void	inject_code(t_elf64 *elf)
 {
 	size_t			len;
@@ -161,7 +178,7 @@ void	inject_code(t_elf64 *elf)
 			printf("%02x", g_env.shellcode->content[i]);
 		}
 		printf("\n");
-		xor32(elf->mem + elf->offset_text, elf->len_text, swap_bigendian_littleendian(g_env.key.xor32, 4));
+		encrypt(elf->mem + elf->offset_text, elf->len_text);
 		ft_memcpy(ptr, g_env.shellcode->content, g_env.shellcode->len);
 		elf->target->p_memsz += len;
 		elf->target->p_filesz += len;
@@ -193,7 +210,7 @@ void	atoi_key(void *data, size_t size, char *key)
 	if ((size_str = ft_strlen(key)) > size * 2) {
 		fprintf(stderr, "Warning !!! Given key to long it will be truncate\n"); 
 	}
-	size_str -= 8;
+	size_str = (size_str >= 8) ? size_str - 8 : 0;
 	size_t i = 0;
 	do {
 		cast[i] = ft_atoi_base(key + size_str, "0123456789ABCDEF");
@@ -240,19 +257,25 @@ int		main(int argc, char **argv)
 	// sh_mprotect_text_executable(g_env.shellcode);
 	switch (g_env.flag.cipher_type) {
 		case XOR_32:
+			g_env.asm_file = XOR32_ASMFILE;
 			verify_key(&g_env.key.xor32, sizeof(g_env.key.xor32));
-			sh_xor32(g_env.shellcode, g_env.key.xor32);
+			sh_xor(g_env.shellcode, g_env.key.xor32, X32);
 			break;
 		case XOR_16:
+			g_env.asm_file = XOR16_ASMFILE;
 			verify_key(&g_env.key.xor16, sizeof(g_env.key.xor16));
-			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			sh_xor(g_env.shellcode, g_env.key.xor16, X16);
 			break;
 		case XOR_8:
+			g_env.asm_file = XOR8_ASMFILE;
 			verify_key(&g_env.key.xor8, sizeof(g_env.key.xor8));
-			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			sh_xor(g_env.shellcode, g_env.key.xor8, X8);
 			break;
 		case RC5:
-			verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
+		//	verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
+			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
+			break;
+		default:
 			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
 			break;
 	}

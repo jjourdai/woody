@@ -26,6 +26,7 @@
 
 # include "libft.h"
 # include "shellcode.h"
+# include "encrypt.h"
 
 # define COUNT_OF(ptr) (sizeof(ptr) / sizeof((ptr)[0]))
 # define OFFSETOF(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
@@ -56,6 +57,9 @@
 # define DEFAULT_ALGO XOR_32
 
 # define TEXT_NAME	".text"
+# define XOR32_ASMFILE	"asm_files/xor32"
+# define XOR16_ASMFILE	"asm_files/xor16"
+# define XOR8_ASMFILE	"asm_files/xor8"
 
 enum	options {
 	F_HELP = (1 << 0),
@@ -116,6 +120,7 @@ struct woody {
 		char		*key_str;
 	} flag;
 	union key key;
+	char *asm_file;
 	t_shellcode			*shellcode;
 	t_shellcode_meta	shellcode_meta;
 };

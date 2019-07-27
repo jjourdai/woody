@@ -34,7 +34,7 @@ t_bool			ft_str_is_only_digit(char *str)
 t_bool			str_is_hexa(char *str)
 {
 	int	i;
-	char	base[] = "0123456789ABCDEFabcdef";
+	char	base[] = "0123456789ABCDEF";
 
 	if (!str)
 		return 0;

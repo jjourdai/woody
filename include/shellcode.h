@@ -6,6 +6,7 @@
 # include <stdint.h>
 
 # include "libft.h"
+# include "encrypt.h"
 
 // tab_textptr[0] is for the final jump
 
@@ -47,6 +48,6 @@ void			sh_jump(t_shellcode *sh);
 // void			sh_mprotect_text_writable(t_shellcode *sh);
 // void			sh_mprotect_text_executable(t_shellcode *sh);
 
-t_bool			sh_xor32(t_shellcode *sh, uint32_t key);
+t_bool			sh_xor(t_shellcode *sh, uint32_t key, enum xor_size size);
 
 #endif
