@@ -1,0 +1,42 @@
+language: C
+dist: xenial
+compiler: gcc
+git:
+  depth: false
+  gitsubmodules: false
+
+stages:
+  - Base
+  - Test
+
+matrix:
+  include:
+    - name: verifying travis.yml file
+      stage: Base
+      script:
+        - python3 .travis_gen.py > expected.out
+        - diff .travis.yml expected.out
+    - name: compile woody woodpacker
+      stage: Base
+      script:
+        - make
+    - name: Testing on ubuntu
+      stage: Test
+      script:
+        - make -f test.mk ubuntu
+    - name: Testing on debian
+      stage: Test
+      script:
+        - make -f test.mk debian
+    - name: Testing on fedora
+      stage: Test
+      script:
+        - make -f test.mk fedora
+    - name: Testing on archlinux
+      stage: Test
+      script:
+        - make -f test.mk archlinux
+    - name: Testing on kalilinux
+      stage: Test
+      script:
+        - make -f test.mk kalilinux
