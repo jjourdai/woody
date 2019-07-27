@@ -4,6 +4,7 @@ set -eu
 
 PROG_DIR="./tests/progs/"
 PROGS=$(ls "${PROG_DIR}")
+CIPHERS="xor8 xor16 xor32"
 
 _RED=$(tput setaf 1 2> /dev/null || echo "")
 _GREEN=$(tput setaf 2 2> /dev/null || echo "")
@@ -11,16 +12,17 @@ _END=$(tput sgr0 2> /dev/null || echo "")
 
 make re
 
-process() {
+_process() {
 	exec="$1"
 	name="$2"
 	args="$3"
+	ciph_mode="$4"
 	DIFF=1
 	WOODY=1
 
-	printf "===== %-40s : " "${name}"
+	printf "===== %-40s / %-10s : " "${name}" "${ciph_mode}"
 	${exec} $args > /tmp/a 2>&1
-	./woody_woodpacker "${exec}" > /dev/null 2>&1
+	./woody_woodpacker -c "${ciph_mode}" "${exec}" > /dev/null 2>&1
 	./woody $args > /tmp/b 2>&1
 	LINE=$(head -n 1 < /tmp/b)
 	tail -n +2 < /tmp/b > /tmp/c
@@ -40,6 +42,12 @@ process() {
 	if [ "$WOODY" = "0" -o "$DIFF" = "0" ]; then
 		exit 1
 	fi
+}
+
+process() {
+	for ciph in $CIPHERS; do
+		_process "$1" "$2" "$3" "$ciph"
+	done
 }
 
 for file in ${PROGS}; do
