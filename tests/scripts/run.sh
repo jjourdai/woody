@@ -61,7 +61,7 @@ for file in ${PROGS}; do
 done
 
 process /bin/ls "/bin/ls /bin /usr/bin" "/bin /usr/bin"
-process /bin/date "/bin/date" ""
+process /bin/date "/bin/date" "+%D"
 process /bin/grep "/bin/grep 'include' -R /usr/include" "include -R /usr/include"
 process /bin/grep "/bin/grep 'define' -R /usr/include" "define -R /usr/include"
 process /bin/uname "/bin/uname -a" "-a"
