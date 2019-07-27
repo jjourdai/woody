@@ -18,6 +18,9 @@ SRC_NAME = \
 		err.c \
 		consts.c \
 		elf64_loader.c \
+		elf64_dissect.c \
+		useless.c \
+		check_or_generate_key.c \
 		encrypt/rc5_encrypt.c \
 		encrypt/xor.c \
 		shellcode/sh_alloc.c \

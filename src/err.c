@@ -13,6 +13,7 @@ char	*error_str[] = {
 	[KEY_NOT_HEXA] = RED_TEXT("%s: The given key must be represented in upper hexadecimal character -- '%s'\n"),
 	[KEY_TOO_LONG] = RED_TEXT("%s: The given key is too long must be 32bits -- '%s'\n"),
 	[UNKNOWN_CIPHER_TYPE] = RED_TEXT("%s: Unaivailable cipher type -- '%s'\n"),
+	[SECTION_TEXT_NOT_FOUND] = RED_TEXT("%s: Section text not found corrupted file -- '%s'\n"),
 };
 
 static void internal_handle_error(uint32_t line, char *file, t_bool fatal, char *str, ...)

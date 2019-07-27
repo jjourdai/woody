@@ -13,17 +13,6 @@
 #include "woody.h"
 #include "colors.h"
 
-void 	get_random_data(void *buffer, size_t size)
-{
-	int		fd;
-
-	if ((fd = open("/dev/urandom", O_RDONLY)) == -1)
-		exit(fd);
-	read(fd, buffer, size);
-	close(fd);
-	return ;
-}
-
 void	get_key(char *arg, void *var)
 {
 	if (str_is_hexa(arg) == 0) {

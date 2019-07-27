@@ -89,6 +89,7 @@ enum	error {
 	KEY_NOT_HEXA,
 	KEY_TOO_LONG,
 	UNKNOWN_CIPHER_TYPE,
+	SECTION_TEXT_NOT_FOUND,
 };
 
 typedef struct parameters {
@@ -119,9 +120,9 @@ struct woody {
 		uint16_t	cipher_type;
 		char		*key_str;
 	} flag;
-	union key key;
-	char *asm_file;
-	t_shellcode			*shellcode;
+	union key		key;
+	char			*asm_file;
+	t_shellcode		*shellcode;
 	t_shellcode_meta	shellcode_meta;
 };
 
@@ -139,7 +140,6 @@ typedef struct	s_elf64
 /* params.c */
 char	*get_params(char **argv, int argc, uint32_t *flag);
 void	get_options(int argc, char **argv);
-void    get_random_data(void *buffer, size_t size);
 
 /* error.c */
 void	handle_error(uint32_t line, char *file, t_bool fatal, uint32_t error_code,  ...);
@@ -147,8 +147,17 @@ int		x_int(int err, int res, char *str, char *file, int line);
 void	*x_void(void *err, void *res, char *str, char *file, int line);
 
 /* elf64_loader.c */
-
 t_bool	elf64_loader(t_elf64 *elf, const char *filename);
+
+/* check_or_generate_key */
+void	verify_key(void *data, size_t size);
+
+/* elf64_dissect.c */
+void    browse_all_program_header(t_elf64 *elf);
+void    search_section_text_metadata(t_elf64 *elf);
+Elf64_Shdr	*search_targeted_section(t_elf64 *elf, char *sect_name);
+
+
 
 // globals
 struct woody			g_env;

@@ -5,20 +5,12 @@
 static t_bool	search_text_section(t_elf64 *elf, void **text, size_t *len)
 {
 	Elf64_Shdr	*section;
-	Elf64_Shdr	*shstrtab;
-	char		*strtab;
 
-	section = elf->mem + elf->header->e_shoff;
-	shstrtab = section + elf->header->e_shstrndx;
-	strtab = elf->mem + shstrtab->sh_offset;
-	for (int i = 0; i < elf->header->e_shnum; i++) {
-		if (ft_strncmp(strtab + section->sh_name, TEXT_NAME, ft_strlen(TEXT_NAME)) == 0)
-		{
-			*text = elf->mem + section->sh_offset;
-			*len = section->sh_size;
-			return (TRUE);
-		}
-		section = (void*)section + elf->header->e_shentsize;
+	if ((section = search_targeted_section(elf, TEXT_NAME)) != NULL)
+	{
+		*text = elf->mem + section->sh_offset;
+		*len = section->sh_size;
+		return (TRUE);
 	}
 	return (FALSE);
 }
