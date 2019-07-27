@@ -1,23 +1,23 @@
 
-section .data:
-fmt_tmp:
-	.string		db "tmp[0] : %d", 10, 0
-fmtA:
-	.string		db "A : %016lx", 10, 0
-fmtB:
-	.string		db "B : %016lx", 10, 0
-fmtC:
-	.string		db "C : %016lx", 10, 0
-fmtD:
-	.string		db "D : %016lx", 10, 0
-fmtE:
-	.string		db "E : %016lx", 10, 0
-fmtF:
-	.string		db "F : %016lx", 10, 0
+; section .data:
+; fmt_tmp:
+; 	.string		db "tmp[0] : %d", 10, 0
+; fmtA:
+; 	.string		db "A : %016lx", 10, 0
+; fmtB:
+; 	.string		db "B : %016lx", 10, 0
+; fmtC:
+; 	.string		db "C : %016lx", 10, 0
+; fmtD:
+; 	.string		db "D : %016lx", 10, 0
+; fmtE:
+; 	.string		db "E : %016lx", 10, 0
+; fmtF:
+; 	.string		db "F : %016lx", 10, 0
 
-section .text:
-	global rc5
-	extern printf
+; section .text:
+; 	global rc5
+; 	extern printf
 
 # rdi	pointer
 # rsi	len
