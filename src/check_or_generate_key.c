@@ -15,9 +15,9 @@ static void 	get_random_data(void *buffer, size_t size)
 static void	atoi_key(void *data, size_t size, char *key)
 {
 	uint32_t	*cast = data;
-	size_t		size_str;
+	int		size_str;
 	
-	if ((size_str = ft_strlen(key)) > size * 2) {
+	if ((size_str = (int)ft_strlen(key)) > (int)size * 2) {
 		fprintf(stderr, "Warning !!! Given key to long it will be truncate\n"); 
 	}
 	size_str = (size_str >= 8) ? size_str - 8 : 0;
@@ -27,7 +27,9 @@ static void	atoi_key(void *data, size_t size, char *key)
 		key[size_str] = 0;
 		i++;
 		size_str -= 8;
-	} while (i < size / 4);
+		if (size_str < 0 && size_str > -8)
+			size_str = 0;
+	} while (i < size / 4 && size_str >= 0);
 }
 
 void	verify_key(void *data, size_t size)
