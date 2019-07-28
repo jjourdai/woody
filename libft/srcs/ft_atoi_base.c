@@ -22,32 +22,6 @@ static int	caract(char c, char *base)
 	return (i);
 }
 
-static int	error_base(char *base, int size)
-{
-	int		i;
-	int		j;
-	char	tmp[size];
-
-	i = 0;
-	if (base == 0)
-		return (0);
-	while (base[i])
-	{
-		if (base[i] == '+' || base[i] == '-')
-			return (0);
-		tmp[i] = base[i];
-		i++;
-		j = 0;
-		while (tmp[j])
-		{
-			if (tmp[j] == base[i])
-				return (0);
-			j++;
-		}
-	}
-	return (1);
-}
-
 static int	error_str(char *base, char *str)
 {
 	int i;
@@ -81,7 +55,7 @@ int			ft_atoi_base(char *str, char *base)
 	nbr = 0;
 	negative = 0;
 	i = 0;
-	if (error_base(base, ft_strlen(base)) == 0 || error_str(base, str) == 0)
+	if (error_str(base, str) == 0)
 		return (0);
 	while ((str[i] == '\n') || (str[i] == '\t') || (str[i] == '\v') ||
 			(str[i] == ' ') || (str[i] == '\f') || (str[i] == '\r'))

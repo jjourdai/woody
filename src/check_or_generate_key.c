@@ -20,16 +20,15 @@ static void	atoi_key(void *data, size_t size, char *key)
 	if ((size_str = (int)ft_strlen(key)) > (int)size * 2) {
 		fprintf(stderr, "Warning !!! Given key to long it will be truncate\n"); 
 	}
-	size_str = (size_str >= 8) ? size_str - 8 : 0;
 	size_t i = 0;
+	size_t copy_size;
 	do {
-		cast[i] = ft_atoi_base(key + size_str, "0123456789ABCDEF");
-		key[size_str] = 0;
+		copy_size = (size_str / 8) ? 8 : size_str;
+		cast[i] = ft_atoi_base(key + (size_str - copy_size), "0123456789ABCDEF");
+		key[size_str - copy_size] = 0;
+		size_str -= copy_size;
 		i++;
-		size_str -= 8;
-		if (size_str < 0 && size_str > -8)
-			size_str = 0;
-	} while (i < size / 4 && size_str >= 0);
+	} while (i < size / 4 && size_str > 0);
 }
 
 void	verify_key(void *data, size_t size)
