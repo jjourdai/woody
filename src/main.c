@@ -14,10 +14,10 @@ void	encrypt(uint64_t *addr, size_t length)
 {
 	switch (g_env.flag.cipher_type) {
 		case XOR_32:
-			xor(addr, length, swap_bigendian_littleendian(g_env.key.xor32, X32), X32);
+			xor(addr, length, g_env.key.xor32, X32);
 			break;
 		case XOR_16:
-			xor(addr, length, swap_bigendian_littleendian(g_env.key.xor16, X16), X16);
+			xor(addr, length, g_env.key.xor16, X16);
 			break;
 		case XOR_8:
 			xor(addr, length, g_env.key.xor8, X8);
