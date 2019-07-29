@@ -39,7 +39,7 @@ static void	inject_code(t_elf64 *elf)
 			offset_real = elf->target->p_memsz + elf->target->p_vaddr;
 		}
 		g_env.shellcode_meta.entrypoint = elf->header->e_entry - offset_real - len;
-		g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - offset_real - len;
+		g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - offset_real;
 		elf->header->e_entry = offset_real;
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
 		sh_finish(g_env.shellcode, g_env.shellcode_meta);
