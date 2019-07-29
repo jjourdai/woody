@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nmap.h                                             :+:      :+:    :+:   */
+/*   woody.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: polooo <polooo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:12:39 by jjourdai          #+#    #+#             */
-/*   Updated: 2019/04/21 19:00:19 by polooo           ###   ########.fr       */
+/*   Updated: 2019/07/29 16:00:12 by jpriou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@
 # define XOR16_ASMFILE	"asm_files/xor16"
 # define XOR8_ASMFILE	"asm_files/xor8"
 # define RC5_ASMFILE	"asm_files/rc5"
+
+# define WOODY_OK		EXIT_SUCCESS
+# define WOODY_FAIL		EXIT_FAILURE
+# define WOODY_NO_SPACE	84
 
 enum	options {
 	F_HELP = (1 << 0),
@@ -121,10 +125,11 @@ struct woody {
 		uint16_t	cipher_type;
 		char		*key_str;
 	} flag;
-	union key		key;
-	char			*asm_file;
-	t_shellcode		*shellcode;
+	union key			key;
+	char				*asm_file;
+	t_shellcode			*shellcode;
 	t_shellcode_meta	shellcode_meta;
+	int					exit_code;
 };
 
 typedef struct	s_elf64

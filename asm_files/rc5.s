@@ -1,24 +1,4 @@
 
-; section .data:
-; fmt_tmp:
-; 	.string		db "tmp[0] : %d", 10, 0
-; fmtA:
-; 	.string		db "A : %016lx", 10, 0
-; fmtB:
-; 	.string		db "B : %016lx", 10, 0
-; fmtC:
-; 	.string		db "C : %016lx", 10, 0
-; fmtD:
-; 	.string		db "D : %016lx", 10, 0
-; fmtE:
-; 	.string		db "E : %016lx", 10, 0
-; fmtF:
-; 	.string		db "F : %016lx", 10, 0
-
-; section .text:
-; 	global rc5
-; 	extern printf
-
 # rdi	pointer
 # rsi	len
 # rdx	key pointer
@@ -63,10 +43,6 @@ rc5:
 		shr		r12, 3
 		mov		[rsp + 0x78], r12	; save tot size of L array (bytes)
 
-		; lea		rdi, [rel fmtD.string]
-		; mov		rsi, [rsp + 0x78]
-		; call	printf
-
 	.init_s_array:
 		mov		rax, qword 0xb7e151628aed2a6b	; P
 		mov		qword [rsp + 0x110], rax
@@ -78,19 +54,15 @@ rc5:
 		cmp		[rsp + 0x0], rcx
 		jge		.end_loop1
 
-		mov		rcx, 0x110
+		mov		rcx, rsp
 		add		rcx, [rsp + 0x0]
-		add		rcx, rsp
+		add		rcx, 0x110
 		mov		rdx, rcx
 		sub		rdx, 0x8
 		mov		rdx, qword [rdx]
 
 		mov		[rcx], rdx
 		add		[rcx], rbx
-
-		; lea		rdi, [rel fmtA.string]
-		; mov		rsi, [rcx]
-		; call	printf
 
 		add		qword [rsp + 0x0], 8
 		jmp		.loop1
@@ -139,10 +111,6 @@ rc5:
 
 		add		[rbx], rax
 
-		; lea		rdi, [rel fmtB.string]
-		; mov		rsi, [rbx]
-		; call	printf
-
 		inc		qword [rsp + 0x0]
 		jmp		.loop2
 
@@ -150,8 +118,7 @@ rc5:
 
 		mov		rax, [rsp + 0x68]
 		inc		eax
-		mov		ebx, 2
-		mul		ebx
+		shl		eax, 1
 
 		cmp		eax, 2
 		jg		.L2
@@ -162,8 +129,7 @@ rc5:
 		mov		ebx, 3
 		mul		ebx
 
-		mov		qword [rsp + 0x0], rax
-		; mov		qword [rsp + 0x0], 2		; tmp[0]
+		mov		qword [rsp + 0x0], rax		; tmp[0]
 		mov		qword [rsp + 0x8], 0		; tmp[1]
 		mov		qword [rsp + 0x10], 0		; tmp[2]
 		mov		qword [rsp + 0x18], 0		; reg[0]
@@ -176,20 +142,11 @@ rc5:
 		dec		rax
 		mov		qword [rsp + 0x0], rax
 
-		; lea		rdi, [rel fmt_tmp.string]
-		; mov		rsi, rax
-		; call	printf
-
 		mov		[rsp + 0x30], rsp
 		add		qword [rsp + 0x30], 0x110
 		mov		rax, qword [rsp + 0x8]
 		shl		rax, 3
 		add		qword [rsp + 0x30], rax		; construction of S + tmp[1]
-
-		; mov		rbx, qword [rsp + 0x30]
-		; lea		rdi, [rel fmtA.string]
-		; mov		rsi, [rbx]
-		; call	printf
 
 		mov		rax, qword [rsp + 0x30]
 		mov		rax, qword [rax]
@@ -201,20 +158,11 @@ rc5:
 		mov		rbx, qword [rsp + 0x30]
 		mov		[rbx], rax					; S[tmp[1]] <- rax
 
-		; lea		rdi, [rel fmtB.string]
-		; mov		rsi, [rsp + 0x18]
-		; call	printf
-
 		mov		[rsp + 0x30], rsp
 		add		qword [rsp + 0x30], 0x100
 		mov		rax, qword [rsp + 0x10]
 		shl		rax, 3
 		add		qword [rsp + 0x30], rax		; construction of L + tmp[2]
-
-		; mov		rbx, qword [rsp + 0x30]
-		; lea		rdi, [rel fmtC.string]
-		; mov		rsi, [rbx]
-		; call	printf
 
 		mov		rax, qword [rsp + 0x30]
 		mov		rax, qword [rax]
@@ -232,10 +180,6 @@ rc5:
 		mov		rbx, [rsp + 0x30]
 		mov		[rbx], rax					; L[tmp[2]] <- rax
 
-		; lea		rdi, [rel fmtD.string]
-		; mov		rsi, [rsp + 0x20]
-		; call	printf
-
 		mov		rax, [rsp + 0x8]
 		inc		rax
 		xor		rdx, rdx
@@ -244,10 +188,6 @@ rc5:
 		div		ebx
 		mov		[rsp + 0x8], rdx
 
-		; lea		rdi, [rel fmtE.string]
-		; mov		rsi, [rsp + 0x8]
-		; call	printf
-
 		mov		rax, [rsp + 0x10]
 		inc		rax
 		xor		rdx, rdx
@@ -255,10 +195,6 @@ rc5:
 
 		div		ebx
 		mov		[rsp + 0x10], rdx
-
-		; lea		rdi, [rel fmtF.string]
-		; mov		rsi, [rsp + 0x10]
-		; call	printf
 
 		jmp		.loop3
 
@@ -277,135 +213,74 @@ rc5:
 		mov		rax, [rax]
 		mov		[rsp + 0x10], rax
 
-		mov		rax, [rsp + 0x50]
-		add		rax, 8
-		mov		rax, [rax]
-		mov		[rsp + 0x18], rax
-
-		; lea		rdi, [rel fmtA.string]
-		; mov		rsi, [rsp + 0x10]
-		; call	printf
-
-		; lea		rdi, [rel fmtB.string]
-		; mov		rsi, [rsp + 0x18]
-		; call	printf
+		mov		rbx, [rsp + 0x50]
+		add		rbx, 8
+		mov		rbx, [rbx]
+		mov		[rsp + 0x18], rbx
 
 	.loop4_bis:
-		mov		rbx, [rsp + 0x0]
-		cmp		rbx, 1
+		mov		rdx, [rsp + 0x0]
+		cmp		rdx, 1
 		jl		.end_loop4_bis
 
-		; lea		rdi, [rel fmt_tmp.string]
-		; mov		rsi, [rsp + 0x0]
-		; call	printf
-
-		mov		rbx, [rsp + 0x0]
-		shl		rbx, 1
-		inc		rbx
-		shl		rbx, 3
-		add		rbx, rsp
-		add		rbx, 0x110
-		mov		rbx, [rbx]
-
-		; lea		rdi, [rel fmtA.string]
-		; mov		rsi, rbx
-		; call	printf
+		mov		rdx, [rsp + 0x0]
+		shl		rdx, 1
+		inc		rdx
+		shl		rdx, 3
+		add		rdx, rsp
+		add		rdx, 0x110
+		mov		rdx, [rdx]
 
 		mov		rax, [rsp + 0x18]
-		sub		rax, rbx
+		sub		rax, rdx
 
-		mov		[rsp + 0x18], rax
-
-		; lea		rdi, [rel fmtB.string]
-		; mov		rsi, [rsp + 0x18]
-		; call	printf
-	
-		mov		rax, [rsp + 0x18]
 		mov		rcx, [rsp + 0x10]
 		ror		rax, cl
-
-		mov		rbx, [rsp + 0x10]
-		xor		rax, rbx
+		xor		rax, rcx
 
 		mov		[rsp + 0x18], rax
 
-		; lea		rdi, [rel fmtC.string]
-		; mov		rsi, [rsp + 0x18]
-		; call	printf
-
-		mov		rbx, [rsp + 0x0]
-		shl		rbx, 1
-		shl		rbx, 3
-		add		rbx, rsp
-		add		rbx, 0x110
-		mov		rbx, [rbx]
-
-		mov		[rsp + 0x40], rbx
-
-		; lea		rdi, [rel fmtD.string]
-		; mov		rsi, [rsp + 0x40]
-		; call	printf
+		mov		rdx, [rsp + 0x0]
+		shl		rdx, 4
+		add		rdx, rsp
+		add		rdx, 0x110
+		mov		rdx, [rdx]
 
 		mov		rax, [rsp + 0x10]
-		sub		rax, [rsp + 0x40]
+		sub		rax, rdx
 
-		mov		[rsp + 0x10], rax
-
-		; lea		rdi, [rel fmtE.string]
-		; mov		rsi, [rsp + 0x10]
-		; call	printf
-
-		mov		rax, [rsp + 0x10]
 		mov		rcx, [rsp + 0x18]
 		ror		rax, cl
-
-		mov		rbx, [rsp + 0x18]
-		xor		rax, rbx
+		xor		rax, rcx
 
 		mov		[rsp + 0x10], rax
 
-		; lea		rdi, [rel fmtF.string]
-		; mov		rsi, [rsp + 0x10]
-		; call	printf
-
-		mov		rbx, [rsp + 0x0]
-		dec		rbx
-		mov		[rsp + 0x0], rbx
+		mov		rdx, [rsp + 0x0]
+		dec		rdx
+		mov		[rsp + 0x0], rdx
 		jmp		.loop4_bis
 
 	.end_loop4_bis:
 
-		mov		rax, [rsp + 0x10]
-		mov		rbx, [rsp + 0x110]
-		sub		rax, rbx
-		mov		[rsp + 0x10], rax
-
-		mov		rax, [rsp + 0x18]
-		mov		rbx, [rsp + 0x118]
-		sub		rax, rbx
-		mov		[rsp + 0x18], rax
-
-		mov		rbx, [rsp + 0x50]
-		mov		rcx, [rsp + 0x10]
-		mov		[rbx], rcx
-
-		mov		rbx, [rsp + 0x50]
-		add		rbx, 8
-		mov		rcx, [rsp + 0x18]
-		mov		[rbx], rcx
+		mov		rax, [rsp + 0x50]
+		mov		rbx, [rsp + 0x10]
+		mov		rcx, [rsp + 0x110]
+		sub		rbx, rcx
+		mov		[rax], rbx
+		add		rax, 8
+		mov		rbx, [rsp + 0x18]
+		mov		rcx, [rsp + 0x118]
+		sub		rbx, rcx
+		mov		[rax], rbx
+		add		rax, 8
+		mov		[rsp + 0x50], rax
 
 		mov		rax, [rsp + 0x58]
 		sub		rax, 16
 		mov		[rsp + 0x58], rax
 
-		mov		rax, [rsp + 0x50]
-		add		rax, 16
-		mov		[rsp + 0x50], rax
-
 		jmp		.loop4
 	
 	.end_loop4:
 
-		mov		rax, 0
 		leave
-		; ret

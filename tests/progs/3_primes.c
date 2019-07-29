@@ -18,12 +18,12 @@ static void		test(uint32_t n)
 	int		prime;
 
 	prime = is_prime(n);
-	printf("n: %d, is_prime: %s", n, STR_OF_BOOL(prime));
+	printf("n: %d, is_prime: %s\n", n, STR_OF_BOOL(prime));
 }
 
 int				main(void)
 {
-	for (size_t i = 0; i < 1000; ++i)
+	for (size_t i = 2; i < 1000; ++i)
 		test(i);
 	return (0);
 }

@@ -71,7 +71,11 @@ void		pack_this_file(char *filename)
 	if (elf.target != NULL && elf.free_space >= g_env.shellcode->len)
 		inject_code(&elf);
 	else 
+	{
+		fprintf(stderr, "Want to inject shellcode of len: %lu\n", g_env.shellcode->len);
 		fprintf(stderr, "Not enough space found for '%s'\n", filename);
+		g_env.exit_code = WOODY_NO_SPACE;
+	}
 	write_data(&elf);
 	munmap(elf.mem, elf.len);
 }
@@ -79,6 +83,7 @@ void		pack_this_file(char *filename)
 int		main(int argc, char **argv)
 {
 	ft_bzero(&g_env, sizeof(g_env));
+	g_env.exit_code = WOODY_OK;
 	get_options(argc, argv);
 	if (g_env.flag.filename == NULL) {
 		fprintf(stderr, USAGE);
@@ -124,5 +129,5 @@ int		main(int argc, char **argv)
 	printf("filename : %s\n", g_env.flag.filename);
 	pack_this_file(g_env.flag.filename);
 	sh_free(g_env.shellcode);
-	return (EXIT_SUCCESS);
+	return (g_env.exit_code);
 }

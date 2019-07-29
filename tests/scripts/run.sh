@@ -1,13 +1,14 @@
 #!/bin/sh
 
-set -eu
+set -u
 
 PROG_DIR="./tests/progs/"
 PROGS=$(ls "${PROG_DIR}")
-CIPHERS="xor8 xor16 xor32"
+CIPHERS="xor8 xor16 xor32 rc5"
 
 _RED=$(tput setaf 1 2> /dev/null || echo "")
 _GREEN=$(tput setaf 2 2> /dev/null || echo "")
+_YELLOW=$(tput setaf 3 2> /dev/null || echo "")
 _END=$(tput sgr0 2> /dev/null || echo "")
 
 make re
@@ -23,6 +24,10 @@ _process() {
 	printf "===== %-40s / %-10s : " "${name}" "${ciph_mode}"
 	${exec} $args > /tmp/a 2>&1
 	./woody_woodpacker -c "${ciph_mode}" "${exec}" > /dev/null 2>&1
+	if [ "$?" = "84" ]; then
+		printf "%sNot enough space in binary %s\\n" "${_YELLOW}" "${_END}"
+		return
+	fi
 	./woody $args > /tmp/b 2>&1
 	LINE=$(head -n 1 < /tmp/b)
 	tail -n +2 < /tmp/b > /tmp/c
