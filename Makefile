@@ -14,6 +14,7 @@ SRC_PATH = ./src/
 
 SRC_NAME = \
 		main.c \
+		packer.c \
 		param.c \
 		err.c \
 		consts.c \

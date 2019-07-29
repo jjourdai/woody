@@ -152,6 +152,9 @@ void	handle_error(uint32_t line, char *file, t_bool fatal, uint32_t error_code, 
 int		x_int(int err, int res, char *str, char *file, int line);
 void	*x_void(void *err, void *res, char *str, char *file, int line);
 
+/* packer.c */
+void	pack_this_file(char *filename);
+
 /* elf64_loader.c */
 t_bool	elf64_loader(t_elf64 *elf, const char *filename);
 
