@@ -4,7 +4,7 @@
 
 void		sh_finish(t_shellcode *sh, t_shellcode_meta meta)
 {
-	int	val;
+	uint32_t	val;
 
 	ft_memcpy(sh->content + sh->off_entrypoint, &meta.entrypoint, 4);
 	val = meta.section_text_offset + (sh->len - sh->off_vmaddr_text_ptr - 4);
