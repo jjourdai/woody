@@ -9,7 +9,6 @@ enum xor_size {
 	X32 = 4,
 	X16 = 2,
 	X8 = 1,
-
 };
 
 /* XOR */

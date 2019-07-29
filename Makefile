@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/29 17:32:16 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/29 18:31:12 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ SRC_NAME = \
 		elf64_loader.c \
 		elf64_dissect.c \
 		colors.c \
-		useless.c \
 		check_or_generate_key.c \
 		encrypt/rc5_encrypt.c \
 		encrypt/xor.c \
@@ -29,7 +28,6 @@ SRC_NAME = \
 		shellcode/sh_finish.c \
 		shellcode/sh_print.c \
 		shellcode/sh_jump.c \
-		shellcode/sh_mprotect.c \
 		shellcode/sh_regs_recover.c \
 		shellcode/sh_regs_save.c \
 		shellcode/sh_initframe.c \
@@ -73,7 +71,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@ mkdir -p $(shell dirname $@)
-	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 -include $(DEP)
 

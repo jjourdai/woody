@@ -16,8 +16,8 @@ typedef struct	s_shellcode
 	size_t		len;
 	size_t		len_mmap;
 	size_t		off_entrypoint;
-	size_t		off_vmaddr_text_ptr[2];
-	size_t		off_vmaddr_text_len[2];
+	size_t		off_vmaddr_text_ptr;
+	size_t		off_vmaddr_text_len;
 }				t_shellcode;
 
 typedef struct	s_shellcode_meta
@@ -44,9 +44,6 @@ void			sh_endframe(t_shellcode *sh);
 void			sh_print(t_shellcode *sh, const char *str, uint8_t len);
 
 void			sh_jump(t_shellcode *sh);
-
-// void			sh_mprotect_text_writable(t_shellcode *sh);
-// void			sh_mprotect_text_executable(t_shellcode *sh);
 
 t_bool			sh_xor(t_shellcode *sh, uint32_t key, enum xor_size size);
 t_bool			sh_rc5(t_shellcode *sh, uint8_t rc5[KEY_SIZE]);

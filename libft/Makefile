@@ -6,43 +6,75 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/25 14:38:14 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/29 18:37:13 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = ./srcs/
 
-SRC_NAME = tab_is_sort.c \
-		   shift_data.c \
-		   endian.c \
-		   print_bits.c get_next_line.c \
-		   ft_memalloc.c ft_strcat.c ft_strncmp.c \
-		   ft_memccpy.c ft_strchr.c ft_strncpy.c \
-		   ft_atoi.c ft_memchr.c ft_strclr.c \
-		   ft_bzero.c ft_memcmp.c ft_strcmp.c ft_strnew.c \
-		   ft_memcpy.c ft_strcpy.c ft_strnstr.c \
-		   ft_memdel.c ft_strdel.c ft_strrchr.c \
-		   ft_memmove.c ft_strdup.c ft_strsplit.c \
-		   ft_memset.c ft_strequ.c ft_strstr.c \
-		   ft_striter.c ft_strsub.c \
-		   ft_itoa.c ft_striteri.c ft_strtrim.c \
-		   ft_strjoin.c ft_tolower.c \
-		   ft_strlcat.c ft_toupper.c \
-		   ft_putnbr.c ft_strlen.c \
-		   ft_strmap.c ft_strncat.c \
-		   ft_putstr.c ft_strmapi.c \
-		   ft_itoa_base.c \
-		   ft_strndup.c \
-		   ft_strchr_base.c \
-		   ft_insertion_sort.c \
-		   ft_is.c ft_split.c ft_atoi_base.c \
-		   ft_lststrsplit.c \
-		   list_push.c \
-		   list_merge.c \
-		   list_atoi_split.c \
-		   list_size.c list_pop.c \
-		   btree_create_node.c btree_search_item.c checksum.c \
-		   ft_str_is_only_digit.c
+SRC_NAME =	\
+			btree_create_node.c \
+			btree_search_item.c \
+			checksum.c \
+			endian.c \
+			ft_atoi.c \
+			ft_atoi_base.c \
+			ft_bzero.c \
+			ft_insertion_sort.c \
+			ft_is.c \
+			ft_itoa.c \
+			ft_itoa_base.c \
+			ft_lststrsplit.c \
+			ft_memalloc.c \
+			ft_memccpy.c \
+			ft_memchr.c \
+			ft_memcmp.c \
+			ft_memcpy.c \
+			ft_memdel.c \
+			ft_memmove.c \
+			ft_memset.c \
+			ft_putnbr.c \
+			ft_putstr.c \
+			ft_split.c \
+			ft_str_is_only_digit.c \
+			ft_strcat.c \
+			ft_strchr.c \
+			ft_strchr_base.c \
+			ft_strclr.c \
+			ft_strcmp.c \
+			ft_strcpy.c \
+			ft_strdel.c \
+			ft_strdup.c \
+			ft_strequ.c \
+			ft_striter.c \
+			ft_striteri.c \
+			ft_strjoin.c \
+			ft_strlcat.c \
+			ft_strlen.c \
+			ft_strmap.c \
+			ft_strmapi.c \
+			ft_strncat.c \
+			ft_strncmp.c \
+			ft_strncpy.c \
+			ft_strndup.c \
+			ft_strnew.c \
+			ft_strnstr.c \
+			ft_strrchr.c \
+			ft_strsplit.c \
+			ft_strstr.c \
+			ft_strsub.c \
+			ft_strtrim.c \
+			ft_tolower.c \
+			ft_toupper.c \
+			get_next_line.c \
+			list_atoi_split.c \
+			list_merge.c \
+			list_pop.c \
+			list_push.c \
+			list_size.c \
+			print_bits.c \
+			shift_data.c \
+			tab_is_sort.c
 
 OBJ_PATH = .obj/
 
