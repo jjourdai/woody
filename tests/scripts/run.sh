@@ -57,12 +57,11 @@ process() {
 
 for file in ${PROGS}; do
 	file="${PROG_DIR}${file}"
-	gcc -o tested "${file}"
-	process "./tested" "$(basename "${file}")" ""
-	rm -f tested
-	gcc -no-pie -o tested "${file}"
-	process "./tested" "$(basename "${file}") -no-pie" ""
-	rm -f tested
+	for flag in "" -no-pie "-pie -fPIC"; do
+		gcc $flag -o tested "${file}"
+		process "./tested" "$(basename "${file}") $flag" ""
+		rm -f tested
+	done
 done
 
 process /bin/ls "/bin/ls /bin /usr/bin" "/bin /usr/bin"
