@@ -38,10 +38,10 @@ void	verify_key(void *data, size_t size)
 	} else {
 		get_random_data(data, size);
 	}
-	printf(RED_TEXT("Encryption key : '0x"));
+	printf("%s%s", get_color(COLOR_RED), "Encryption key : '0x");
 	size_t i = 0;
 	do {
-		printf(RED_TEXT("%hhx"), ((uint8_t*)data)[i]);
+		printf("%hhx", ((uint8_t*)data)[i]);
 	} while (++i < size);
-	printf(RED_TEXT("'\n"));
+	printf("%s%s", "'\n", get_reset());
 }

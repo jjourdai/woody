@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/25 15:14:28 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/29 17:32:16 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC_NAME = \
 		consts.c \
 		elf64_loader.c \
 		elf64_dissect.c \
+		colors.c \
 		useless.c \
 		check_or_generate_key.c \
 		encrypt/rc5_encrypt.c \
@@ -44,7 +45,7 @@ CPPFLAGS = -Iinclude -I ./libft/include
 
 LDFLAGS = -Llibft
 
-LDLIBS = -lft
+LDLIBS = -lft -lncurses
 
 NAME = woody_woodpacker
 

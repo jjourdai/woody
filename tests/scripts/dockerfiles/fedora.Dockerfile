@@ -9,7 +9,8 @@ RUN \
 			nasm \
 	&&	dnf update -y \
 	&&	dnf install -y \
-			findutils
+			findutils \
+			libncurses-dev
 
 COPY	. /woody_woodpacker/
 

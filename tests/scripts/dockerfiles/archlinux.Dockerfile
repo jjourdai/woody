@@ -8,7 +8,8 @@ RUN \
 			make \
 			nasm \
 			diffutils \
-			grep
+			grep \
+			libncurses-dev
 
 COPY	. /woody_woodpacker/
 

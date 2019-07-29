@@ -6,7 +6,8 @@ RUN \
 	&&	apt-get install -y \
 			gcc \
 			make \
-			nasm
+			nasm \
+			libncurses-dev
 
 COPY	. /woody_woodpacker/
 

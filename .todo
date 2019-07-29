@@ -10,13 +10,13 @@ Core:
 	Encryption/Decryption:
 		☐ Crypter également la section .data
 		☐ Décrypter également la section .data
-		☐ Faire plusieurs algorithmes
+		✔ Faire plusieurs algorithmes @done(19-07-29 17:47)
 			✔ xor
 				✔ xor 8
 				✔ xor 16
 				✔ xor 32
 			☐ rc4
-			☐ rc5
+			✔ rc5 @done(19-07-29 17:47)
 			☐ rc6
 
 	Test:
