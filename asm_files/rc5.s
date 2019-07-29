@@ -407,6 +407,5 @@ rc5:
 	.end_loop4:
 
 		mov		rax, 0
-		mov		rsp, rbp
-		pop		rbp
+		leave
 		; ret

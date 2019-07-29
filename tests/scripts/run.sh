@@ -1,10 +1,10 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
 PROG_DIR="./tests/progs/"
 PROGS=$(ls "${PROG_DIR}")
-CIPHERS="xor8 xor16 xor32 rc5"
+CIPHERS="xor8 xor16 xor32"
 
 _RED=$(tput setaf 1 2> /dev/null || echo "")
 _GREEN=$(tput setaf 2 2> /dev/null || echo "")
@@ -22,7 +22,7 @@ _process() {
 
 	printf "===== %-40s / %-10s : " "${name}" "${ciph_mode}"
 	${exec} $args > /tmp/a 2>&1
-	./woody_woodpacker -c "${ciph_mode}" "${exec}"
+	./woody_woodpacker -c "${ciph_mode}" "${exec}" > /dev/null 2>&1
 	./woody $args > /tmp/b 2>&1
 	LINE=$(head -n 1 < /tmp/b)
 	tail -n +2 < /tmp/b > /tmp/c
