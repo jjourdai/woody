@@ -14,10 +14,10 @@ static void	encrypt(uint64_t *addr, size_t length)
 {
 	switch (g_env.flag.cipher_type) {
 		case XOR_32:
-			xor(addr, length, swap_bigendian_littleendian(g_env.key.xor32, X32), X32);
+			xor(addr, length, g_env.key.xor32, X32);
 			break;
 		case XOR_16:
-			xor(addr, length, swap_bigendian_littleendian(g_env.key.xor16, X16), X16);
+			xor(addr, length, g_env.key.xor16, X16);
 			break;
 		case XOR_8:
 			xor(addr, length, g_env.key.xor8, X8);
@@ -68,10 +68,14 @@ static void	pack_this_file(char *filename)
 	elf64_loader(&elf, filename);
 	browse_all_program_header(&elf);
 	search_section_text_metadata(&elf);
-	if (elf.target != NULL || elf.free_space < g_env.shellcode->len)
+	if (elf.target != NULL && elf.free_space >= g_env.shellcode->len)
 		inject_code(&elf);
 	else 
+	{
+		fprintf(stderr, "Want to inject shellcode of len: %lu\n", g_env.shellcode->len);
 		fprintf(stderr, "Not enough space found for '%s'\n", filename);
+		g_env.exit_code = WOODY_NO_SPACE;
+	}
 	write_data(&elf);
 	munmap(elf.mem, elf.len);
 }
@@ -79,6 +83,7 @@ static void	pack_this_file(char *filename)
 int		main(int argc, char **argv)
 {
 	ft_bzero(&g_env, sizeof(g_env));
+	g_env.exit_code = WOODY_OK;
 	get_options(argc, argv);
 	if (g_env.flag.filename == NULL) {
 		fprintf(stderr, USAGE);
@@ -124,5 +129,5 @@ int		main(int argc, char **argv)
 	printf("filename : %s\n", g_env.flag.filename);
 	pack_this_file(g_env.flag.filename);
 	sh_free(g_env.shellcode);
-	return (EXIT_SUCCESS);
+	return (g_env.exit_code);
 }
