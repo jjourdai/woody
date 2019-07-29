@@ -28,19 +28,19 @@ static void	encrypt(uint64_t *addr, size_t length)
 static void	inject_code(t_elf64 *elf)
 {
 	size_t			len;
+	size_t			offset_real;
 	void			*ptr;
 
 	if (elf->target != NULL) {
 		len = g_env.shellcode->len;
 		if (elf->header->e_type == ET_DYN) {
-			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_offset) - len;
-			elf->header->e_entry = elf->target->p_memsz + elf->target->p_offset;
-			g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - (elf->target->p_memsz + elf->target->p_offset) - len;
+			offset_real = elf->target->p_memsz + elf->target->p_offset;
 		} else {
-			g_env.shellcode_meta.entrypoint = elf->header->e_entry - (elf->target->p_memsz + elf->target->p_vaddr) - len;
-			elf->header->e_entry = elf->target->p_memsz + elf->target->p_vaddr;
-			g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - (elf->target->p_memsz + elf->target->p_vaddr) - len;
+			offset_real = elf->target->p_memsz + elf->target->p_vaddr;
 		}
+		g_env.shellcode_meta.entrypoint = elf->header->e_entry - offset_real - len;
+		g_env.shellcode_meta.section_text_offset = g_env.shellcode_meta.vmaddr_text_ptr - offset_real - len;
+		elf->header->e_entry = offset_real;
 		ptr = elf->mem + elf->target->p_memsz + elf->target->p_offset;
 		sh_finish(g_env.shellcode, g_env.shellcode_meta);
 		printf("Shellcode injected; len: %lu\n", g_env.shellcode->len);
