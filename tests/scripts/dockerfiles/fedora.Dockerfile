@@ -7,6 +7,8 @@ RUN \
 			gcc \
 			make \
 			nasm \
+			ncurses \
+			ncurses-devel \
 	&&	dnf update -y \
 	&&	dnf install -y \
 			findutils
