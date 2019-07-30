@@ -53,14 +53,16 @@
 # define FATAL 1
 # define ELF_MAGIC 0x464c457f
 # define RC5_KEY_SIZE 16
+# define RC4_KEY_SIZE 16
 
-# define DEFAULT_ALGO XOR_32
+# define DEFAULT_ALGO RC4
 
 # define TEXT_NAME	".text"
 # define XOR32_ASMFILE	"asm_files/xor32"
 # define XOR16_ASMFILE	"asm_files/xor16"
 # define XOR8_ASMFILE	"asm_files/xor8"
-# define RC5_ASMFILE	"asm_files/rc5"
+# define RC5_ASMFILE   "asm_files/rc5"
+# define RC4_ASMFILE   "asm_files/rc4"
 
 enum	options {
 	F_HELP = (1 << 0),
@@ -112,6 +114,7 @@ union key {
 	uint16_t xor16;
 	uint32_t xor32;
 	uint8_t rc5[RC5_KEY_SIZE]; 
+	uint8_t rc4[RC4_KEY_SIZE]; 
 };
 
 struct woody {

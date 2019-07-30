@@ -9,15 +9,15 @@
 ; fmtC:
 ; 	.string		db "C : %016lx", 10, 0
 ; fmtD:
-; 	.string		db "D : %016lx", 10, 0
+;	.string		db "D : %016lx", 10, 0
 ; fmtE:
 ; 	.string		db "E : %016lx", 10, 0
 ; fmtF:
 ; 	.string		db "F : %016lx", 10, 0
 
 ; section .text:
-; 	global rc5
-; 	extern printf
+ ;	global rc5
+ ;	extern _printf
 
 # rdi	pointer
 # rsi	len
@@ -29,7 +29,7 @@ rc5:
 		mov		rbp, rsp
 		sub		rsp, 0x20
 		and		rsp, -16
-
+		
 		mov		[rsp + 0x0], rdi
 		mov		[rsp + 0x8], rsi
 		mov		[rsp + 0x10], rdx
@@ -63,9 +63,6 @@ rc5:
 		shr		r12, 3
 		mov		[rsp + 0x78], r12	; save tot size of L array (bytes)
 
-		; lea		rdi, [rel fmtD.string]
-		; mov		rsi, [rsp + 0x78]
-		; call	printf
 
 	.init_s_array:
 		mov		rax, qword 0xb7e151628aed2a6b	; P
@@ -407,6 +404,4 @@ rc5:
 	.end_loop4:
 
 		mov		rax, 0
-		mov		rsp, rbp
-		pop		rbp
-		; ret
+		leave

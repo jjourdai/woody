@@ -50,16 +50,6 @@ process() {
 	done
 }
 
-for file in ${PROGS}; do
-	file="${PROG_DIR}${file}"
-	gcc -o tested "${file}"
-	process "./tested" "$(basename "${file}")" ""
-	rm -f tested
-	gcc -no-pie -o tested "${file}"
-	process "./tested" "$(basename "${file}") -no-pie" ""
-	rm -f tested
-done
-
 process /bin/ls "/bin/ls /bin /usr/bin" "/bin /usr/bin"
 process /bin/date "/bin/date" "+%D"
 process /bin/grep "/bin/grep 'include' -R /usr/include" "include -R /usr/include"

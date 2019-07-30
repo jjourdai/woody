@@ -25,6 +25,10 @@ void	encrypt(uint64_t *addr, size_t length)
 		case RC5:
 			rc5_encrypt(addr, length, g_env.key.rc5);
 			break;
+		case RC4:
+			rc4_encrypt(addr, length, g_env.key.rc4);
+			break;
+
 	}
 }
 
@@ -76,6 +80,8 @@ void		pack_this_file(char *filename)
 	munmap(elf.mem, elf.len);
 }
 
+void *rc4(void *rdi, size_t rsi, void *rdx);
+
 int		main(int argc, char **argv)
 {
 	ft_bzero(&g_env, sizeof(g_env));
@@ -87,6 +93,24 @@ int		main(int argc, char **argv)
 	if (!(g_env.flag.value & F_CIPHER)) {
 		g_env.flag.cipher_type = DEFAULT_ALGO;
 	}
+
+
+/*
+	verify_key(&g_env.key.rc4, sizeof(g_env.key.rc4));
+	char str[] = "This is a amazing test";
+//	printf("%lx\n", *str);
+	write(1, str, sizeof(str));
+	puts("");
+	rc4_encrypt(str, sizeof(str), g_env.key.rc4);
+//	printf("%lx\n", *str);
+	write(1, str, sizeof(str));
+	puts("");
+	rc4(str, sizeof(str), g_env.key.rc4);
+	//printf("%lx\n", *str);
+	write(1, str, sizeof(str));
+	puts("");
+	exit(0);
+*/
 
 	g_env.shellcode = sh_alloc();
 	sh_regs_save(g_env.shellcode);
@@ -112,6 +136,12 @@ int		main(int argc, char **argv)
 			verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
 			sh_rc5(g_env.shellcode, g_env.key.rc5);
 			break;
+		case RC4:
+			g_env.asm_file = RC4_ASMFILE;
+			verify_key(&g_env.key.rc4, sizeof(g_env.key.rc4));
+			sh_rc4(g_env.shellcode, g_env.key.rc4);
+			break;
+
 		default:
 			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
 			break;

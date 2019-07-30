@@ -4,7 +4,7 @@
 static void	init_S_array(uint64_t S[S_SIZE], uint8_t random_key[KEY_SIZE])
 {
 	uint64_t	L[L_SIZE];
-	int			tmp[3];
+	uint32_t			tmp[3];
 	size_t		reg[2];
 
 	S[0] = P;

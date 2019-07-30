@@ -54,4 +54,9 @@ void		rc5_encrypt(void *data, size_t len, uint8_t key[KEY_SIZE]);
 #define ROTR(x, s)	((uint64_t)(((x) >> (s)) | ((x) << (64 - (s)))))
 
 
+/* RC4 */
+
+void            rc4_encrypt(void *in, size_t in_len, uint8_t key[KEY_SIZE]);
+
+
 #endif
