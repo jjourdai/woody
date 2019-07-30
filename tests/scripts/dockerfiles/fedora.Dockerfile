@@ -9,6 +9,7 @@ RUN \
 			nasm \
 			ncurses \
 			ncurses-devel \
+			file \
 	&&	dnf update -y \
 	&&	dnf install -y \
 			findutils

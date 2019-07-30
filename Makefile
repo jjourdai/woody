@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/30 15:31:03 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/30 16:00:59 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,5 +97,19 @@ re:
 	make all
 
 .PHONY: test
-test:
+test: dist_test
+
+.PHONY: dist_test
+dist_test:
 	make -f test.mk all
+
+.PHONY: dist_prepare
+dist_prepare:
+	make -f test.mk all CMD="prepare"
+
+VOL_TAB=$(shell pwd)/tmp/
+
+.PHONY: dist_tab
+dist_tab:
+	make -f test.mk all CMD="tab" VOL_TAB=$(VOL_TAB)
+	cat $(VOL_TAB)/out

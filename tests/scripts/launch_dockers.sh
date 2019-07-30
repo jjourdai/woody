@@ -11,7 +11,7 @@ DIST=""
 
 LIST=""
 
-case $1 in
+case $2 in
 	ubuntu)
 		DIST="ubuntu"
 		LIST="${UBUNTUS}"
@@ -37,11 +37,35 @@ case $1 in
 		;;
 esac
 
+case $1 in
+	prepare|process|tab)
+		;;
+	*)
+		exit 1
+		;;
+esac
+
 for img in $LIST; do
 	docker build \
 		--tag "woody-${DIST}-${img}" \
 		--build-arg "DIST=${img}" \
 		-f "tests/scripts/dockerfiles/${DIST}.Dockerfile" \
 		.
-	docker run --rm --privileged -t "woody-${DIST}-${img}"
+	case $1 in
+		process)
+			docker run \
+				--rm \
+				--privileged \
+				-t "woody-${DIST}-${img}" \
+				process
+			;;
+		tab)
+			docker run \
+				--rm \
+				--privileged \
+				-v "$3:/tab" \
+				-t "woody-${DIST}-${img}" \
+				tab "${DIST}-${img}"
+			;;
+	esac
 done
