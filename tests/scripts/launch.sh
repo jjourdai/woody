@@ -39,9 +39,9 @@ esac
 
 for img in $LIST; do
 	docker build \
-		--tag "${DIST}-${img}" \
+		--tag "woody-${DIST}-${img}" \
 		--build-arg "DIST=${img}" \
 		-f "tests/scripts/dockerfiles/${DIST}.Dockerfile" \
 		.
-	docker run --rm --privileged -t "${DIST}-${img}"
+	docker run --rm --privileged -t "woody-${DIST}-${img}"
 done
