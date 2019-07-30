@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/29 18:31:12 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/30 15:31:03 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 
 .PHONY: clean
 clean:
-	rm -fv $(OBJ)
+	rm -rf $(OBJ)
 	rm -rf $(DEP)
 	make clean -C ./libft/
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
@@ -88,8 +88,8 @@ clean:
 .PHONY: fclean
 fclean: clean
 	make fclean -C ./libft/
-	rm -fv $(NAME)
-	rm -fv woody
+	rm -rf $(NAME)
+	rm -rf woody
 
 .PHONY: re
 re:

@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/29 18:37:13 by jpriou           ###   ########.fr        #
+#    Updated: 2019/07/30 15:31:15 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,13 +109,13 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 
 .PHONY: clean
 clean:
-	rm -fv $(DEP)
-	rm -fv $(OBJ)
+	rm -rf $(DEP)
+	rm -rf $(OBJ)
 	@rmdir $(OBJ_PATH) 2> /dev/null || true
 
 .PHONY: fclean
 fclean: clean
-	rm -fv $(NAME)
+	rm -rf $(NAME)
 
 .PHONY: re
 re: fclean all
