@@ -7,7 +7,8 @@ RUN \
 			gcc \
 			make \
 			nasm \
-			libncurses-dev
+			libncurses-dev \
+			file
 
 COPY	. /woody_woodpacker/
 

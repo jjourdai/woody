@@ -8,7 +8,8 @@ RUN \
 			make \
 			nasm \
 			diffutils \
-			grep
+			grep \
+			file
 
 COPY	. /woody_woodpacker/
 
