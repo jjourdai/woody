@@ -2,7 +2,7 @@
 
 Voici un tableau qui récapitule les capacités de notre programme sur plusieurs distributions:
 
-Ce tableau est auto généré (hormis les 2 premières lignes avec la commande make dist_tab)
+Ce tableau est auto généré (hormis le header avec la commande make dist_tab)
 
 | OS-DIST | CIPHER | Tot  | Success | Not enough space | Crash |
 |:------------ |:----:|:--- |:---    |:---             |:---- |
