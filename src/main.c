@@ -25,9 +25,15 @@ static void	build_shellcode(t_shellcode *sh)
 			verify_key(&g_env.key.rc5, sizeof(g_env.key.rc5));
 			sh_rc5(sh, g_env.key.rc5);
 			break;
+		case RC4:
+			g_env.asm_file = RC4_ASMFILE;
+			verify_key(&g_env.key.rc4, sizeof(g_env.key.rc4));
+			sh_rc4(sh, g_env.key.rc4);
+			break;
 		default:
 			printf("NOT HANDLED\n"); exit(EXIT_FAILURE);
 			break;
+
 	}
 	sh_print(sh, "....WOODY....\n", 14);
 	sh_endframe(sh);

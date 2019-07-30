@@ -22,6 +22,9 @@ static void	encrypt(uint64_t *addr, size_t length)
 		case RC5:
 			rc5_encrypt(addr, length, g_env.key.rc5);
 			break;
+		case RC4:
+			rc4_encrypt(addr, length, g_env.key.rc4);
+			break;
 	}
 }
 

@@ -23,6 +23,7 @@ SRC_NAME = \
 		colors.c \
 		check_or_generate_key.c \
 		encrypt/rc5_encrypt.c \
+		encrypt/rc4_encrypt.c \
 		encrypt/xor.c \
 		shellcode/sh_alloc.c \
 		shellcode/sh_free.c \
@@ -35,6 +36,7 @@ SRC_NAME = \
 		shellcode/sh_endframe.c \
 		shellcode/sh_xor.c \
 		shellcode/sh_rc5.c \
+		shellcode/sh_rc4.c \
 		shellcode/sh_file.c \
 		
 

@@ -47,5 +47,6 @@ void			sh_jump(t_shellcode *sh);
 
 t_bool			sh_xor(t_shellcode *sh, uint32_t key, enum xor_size size);
 t_bool			sh_rc5(t_shellcode *sh, uint8_t rc5[KEY_SIZE]);
+t_bool			sh_rc4(t_shellcode *sh, uint8_t rc4[KEY_SIZE]);
 
 #endif

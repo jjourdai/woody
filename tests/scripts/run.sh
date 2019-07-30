@@ -4,7 +4,7 @@ set -u
 
 PROG_DIR="./tests/progs/"
 PROGS=$(ls "${PROG_DIR}")
-CIPHERS="xor8 xor16 xor32 rc5"
+CIPHERS="xor8 xor16 xor32 rc5 rc4"
 
 _RED=$(tput setaf 1 2> /dev/null || echo "")
 _GREEN=$(tput setaf 2 2> /dev/null || echo "")

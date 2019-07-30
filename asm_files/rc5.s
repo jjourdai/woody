@@ -9,7 +9,7 @@ rc5:
 		mov		rbp, rsp
 		sub		rsp, 0x20
 		and		rsp, -16
-
+		
 		mov		[rsp + 0x0], rdi
 		mov		[rsp + 0x8], rsi
 		mov		[rsp + 0x10], rdx
@@ -282,5 +282,5 @@ rc5:
 		jmp		.loop4
 	
 	.end_loop4:
-
+		mov		rax, 0
 		leave
