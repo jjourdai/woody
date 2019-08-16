@@ -5,7 +5,7 @@
 
 uint8_t		*init_s_permutation_tab(uint8_t key[KEY_SIZE])
 {
-	static int8_t	S[SIZE_PERMUTATION] = {0};
+	static uint8_t	S[SIZE_PERMUTATION] = {0};
 	uint8_t		swap;
 	uint8_t		j;
 	int		i;
@@ -27,7 +27,7 @@ uint8_t		*init_s_permutation_tab(uint8_t key[KEY_SIZE])
 	}
 	printf("\n");
 */
-	return &S;
+	return S;
 }
 
 
