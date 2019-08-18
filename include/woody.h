@@ -6,7 +6,7 @@
 /*   By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 18:12:39 by jjourdai          #+#    #+#             */
-/*   Updated: 2019/07/29 16:00:12 by jpriou           ###   ########.fr       */
+/*   Updated: 2019/08/18 13:15:23 by jpriou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 
 # define COUNT_OF(ptr) (sizeof(ptr) / sizeof((ptr)[0]))
 # define OFFSETOF(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
-# define USAGE BINARY_NAME" [--help] [--key HEXA_KEY] [--cipher CIPHER_TYPE] filename\n"
+# define USAGE BINARY_NAME " [--help] [--key HEXA_KEY] [--cipher CIPHER_TYPE] filename\n"
 
 # define HELPER "--help, -h Print this help screen\n"\
 		"--key, -k  give a key\n"\
 		"--cipher, -c [xor32 | xor16 | xor8 | rc4 | rc5 | rc6]\n"\
-			"xor32 is default\n"
+			"rc5 is default\n"
 
 # define __FATAL(X, ...) handle_error(__LINE__, __FILE__, FATAL, X, __VA_ARGS__)
 # define __ASSERTI(ERR_VALUE, RETURN_VALUE, STRING) x_int(ERR_VALUE, RETURN_VALUE, STRING, __FILE__, __LINE__)
@@ -55,7 +55,7 @@
 # define RC5_KEY_SIZE 16
 # define RC4_KEY_SIZE 16
 
-# define DEFAULT_ALGO RC4
+# define DEFAULT_ALGO RC5
 
 # define TEXT_NAME	".text"
 # define XOR32_ASMFILE	"asm_files/xor32"

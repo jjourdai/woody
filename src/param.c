@@ -6,7 +6,7 @@
 /*   By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/12 12:28:59 by jjourdai          #+#    #+#             */
-/*   Updated: 2019/07/29 17:40:24 by jpriou           ###   ########.fr       */
+/*   Updated: 2019/08/18 13:27:47 by jpriou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	longname_opt(char **argv, uint32_t *flag, int *i)
 	{
 		if (ft_strcmp(options[index].long_name, string) == 0) {
 			if ((*flag & options[index].code) == options[index].code && options[index].dup == DUP_OFF) {
-				fprintf(stderr, "%swoody: Warning --%s have been previously stored you could have an undefined behaviour%s\n", get_color(COLOR_GREEN), options[index].long_name, get_reset());
+				fprintf(stderr, "%s", get_color(COLOR_GREEN));
+				fprintf(stderr, "woody: Warning --%s have been previously stored you could have an undefined behaviour", options[index].long_name);
+				fprintf(stderr, "%s\n", get_reset());
 			}
 			*flag |= options[index].code;
 			if (options[index].f != NULL) {
@@ -92,7 +94,9 @@ void	shortname_opt(char **argv, uint32_t *flag, int *i)
 			if (options[index].short_name == c) {
 				flag_has_found = 1;
 				if ((*flag & options[index].code) == options[index].code && options[index].dup == DUP_OFF) {
-					fprintf(stderr, "%swoody: Warning --%s have been previously stored you could have an undefined behaviour%s\n", get_color(COLOR_GREEN), options[index].long_name, get_reset());
+					fprintf(stderr, "%s", get_color(COLOR_GREEN));
+					fprintf(stderr, "woody: Warning --%s have been previously stored you could have an undefined behaviour", options[index].long_name);
+					fprintf(stderr, "%s\n", get_reset());
 				}
 				*flag |= options[index].code;
 				if (options[index].f != NULL) {
@@ -136,7 +140,9 @@ void	get_options(int argc, char **argv)
 {
 	g_env.flag.filename = get_params(argv, argc, (uint32_t*)&g_env.flag.value);
 	if (g_env.flag.value & F_HELP) {
-		fprintf(stderr, "%s%s%s%s", get_color(COLOR_GREEN), USAGE, HELPER, get_reset());
+		fprintf(stderr, "%s", get_color(COLOR_GREEN));
+		fprintf(stderr, "%s%s", USAGE, HELPER);
+		fprintf(stderr, "%s\n", get_reset());
 		exit(EXIT_SUCCESS);
 	}
 }

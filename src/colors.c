@@ -36,7 +36,7 @@ char	*get_color(int color) {
 char	*get_reset(void) {
 	int		*status = get_status();
 
-	if (*status <= 0)
+	if (*status < 0)
 		return ("");
 	return (tigetstr("sgr0"));
 }
