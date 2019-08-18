@@ -68,6 +68,8 @@
 # define WOODY_FAIL		EXIT_FAILURE
 # define WOODY_NO_SPACE	84
 
+# define ENCRYPTED_BINARY "woody"
+
 enum	options {
 	F_HELP = (1 << 0),
 	F_KEY = (1 << 1),

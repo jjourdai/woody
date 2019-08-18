@@ -2,8 +2,8 @@
 
 static void	write_data(t_elf64 *elf)
 {
-	int fd = __ASSERTI(-1, open("woody", O_WRONLY | O_TRUNC | O_CREAT, 0755), strerror(errno));
-	write(fd, elf->mem, elf->len);
+	int fd = __ASSERTI(-1, open(ENCRYPTED_BINARY, O_WRONLY | O_TRUNC | O_CREAT, 0755), strerror(errno));
+	__ASSERTI(-1, write(fd, elf->mem, elf->len), strerror(errno));
 	close(fd);
 }
 
