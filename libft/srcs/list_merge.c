@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_list_merge.c                                    :+:      :+:    :+:   */
+/*   list_merge.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jjourdai <jjourdai@student42.fr>           +#+  +:+       +#+        */
+/*   By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/24 16:08:42 by jjourdai          #+#    #+#             */
-/*   Updated: 2017/02/20 10:27:35 by jjourdai         ###   ########.fr       */
+/*   Updated: 2019/08/18 11:13:21 by jpriou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_list	*list_map(t_list *lst, t_list *(*f)(t_list *elem))
 	if (!f)
 		return (NULL);
 	new = NULL;
+	bef = NULL;
 	while (lst)
 	{
 		tmp = f(lst);

@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/30 15:31:15 by jpriou           ###   ########.fr        #
+#    Updated: 2019/08/18 11:21:06 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,14 +78,15 @@ SRC_NAME =	\
 
 OBJ_PATH = .obj/
 
-CPPFLAGS = -Iinclude
-
 NAME = libft.a
 
 CC = gcc
 
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
-CFLAGS = -MD -Wall -Wextra -Werror -g
+CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS_STD = -std=gnu11
+CFLAGS_DEP = -MT $@ -MD -MP -MF $(@:.o=.d)
+IFLAGS = -Iinclude
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 DEP_NAME = $(SRC_NAME:.c=.d)
@@ -102,8 +103,8 @@ $(NAME): $(OBJ)
 	ranlib $(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@mkdir $(OBJ_PATH) 2> /dev/null || true
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	@ mkdir $(OBJ_PATH) 2> /dev/null || true
+	$(CC) -c $(CFLAGS) $(CFLAGS_STD) $(CFLAGS_DEP) $(IFLAGS) -o $@ $<
 
 -include $(DEP)
 

@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/07/30 16:00:59 by jpriou           ###   ########.fr        #
+#    Updated: 2019/08/18 11:20:28 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,12 +42,6 @@ SRC_NAME = \
 
 OBJ_PATH = ./.obj/
 
-CPPFLAGS = -Iinclude -I ./libft/include
-
-LDFLAGS = -Llibft
-
-LDLIBS = -lft -lncurses
-
 NAME = woody_woodpacker
 
 CC = gcc
@@ -55,7 +49,12 @@ CC = gcc
 #CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer -MD -std=gnu11
 #CFLAGS = -Wall -Wextra -Werror
 # Weverything
-CFLAGS = -MD -std=gnu11 -Wall -Wextra -g
+CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS_STD = -std=gnu11
+CFLAGS_DEP = -MT $@ -MD -MP -MF $(@:.o=.d)
+IFLAGS = -Iinclude -I ./libft/include
+LDFLAGS = -Llibft
+LDLIBS = -lft -lncurses
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 DEP_NAME = $(SRC_NAME:.c=.d)
@@ -74,7 +73,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@ mkdir -p $(shell dirname $@)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+	$(CC) -c $(CFLAGS) $(CFLAGS_STD) $(CFLAGS_DEP) $(IFLAGS) -o $@ $<
 
 -include $(DEP)
 
