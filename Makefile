@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/08/18 12:42:37 by jpriou           ###   ########.fr        #
+#    Updated: 2019/08/18 13:29:50 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,6 @@ NAME = woody_woodpacker
 
 CC = gcc
 
-#CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer -MD -std=gnu11
-#CFLAGS = -Wall -Wextra -Werror
-# Weverything
 CFLAGS = -g -Wall -Wextra -Werror
 CFLAGS_STD = -std=gnu11
 CFLAGS_DEP = -MT $@ -MD -MP -MF $(@:.o=.d)

@@ -8,31 +8,22 @@ Core:
 	✔ Remplir la todo list @done(19-07-23 20:10)
 
 	Encryption/Decryption:
-		☐ Crypter également la section .data
-		☐ Décrypter également la section .data
 		✔ Faire plusieurs algorithmes @done(19-07-29 17:47)
-			✔ xor
-				✔ xor 8
-				✔ xor 16
-				✔ xor 32
-			☐ rc4
-			✔ rc5 @done(19-07-29 17:47)
-			☐ rc6
-
-	Test:
+		✔ xor
+		✔ xor 8
+		✔ xor 16
+		✔ xor 32
+		✔ rc4 @done(19-08-18 13:30)
+		✔ rc5 @done(19-07-29 17:47)
+		
+		Test:
 		✔ Faire tout plein de tests @done(19-07-26 10:18)
-			✔ https://hub.docker.com/_/ubuntu @done(19-07-23 23:34)
-			✔ https://hub.docker.com/_/debian @done(19-07-26 10:18)
-			✔ https://hub.docker.com/_/fedora @done(19-07-25 15:44)
-			✔ https://hub.docker.com/r/archlinux/base @done(19-07-25 16:15)
-			✔ https://hub.docker.com/r/kalilinux/kali-linux-docker @done(19-07-25 16:24)
-
-	Injection:
-		☐ ajouter la possibilite de rajouter un PT_LOAD si la place est insuffisante.
-
-Annexe:
-	☐ Ranger le code
-	☐ Ne prendre que ce dont on a besoin dans la libft
+		✔ https://hub.docker.com/_/ubuntu @done(19-07-23 23:34)
+		✔ https://hub.docker.com/_/debian @done(19-07-26 10:18)
+		✔ https://hub.docker.com/_/fedora @done(19-07-25 15:44)
+		✔ https://hub.docker.com/r/archlinux/base @done(19-07-25 16:15)
+		✔ https://hub.docker.com/r/kalilinux/kali-linux-docker @done(19-07-25 16:24)
 
 Bonus:
-	☐ Est-ce qu'on fait des bonus ?
+	☐ Crypter/Décrypter la section .data
+	☐ ajouter la possibilite de rajouter un PT_LOAD si la place est insuffisante.

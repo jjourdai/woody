@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/08/18 11:21:06 by jpriou           ###   ########.fr        #
+#    Updated: 2019/08/18 13:29:54 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,6 @@ NAME = libft.a
 
 CC = gcc
 
-#CFLAGS = -Wall -Wextra -fsanitize=address -g -fno-omit-frame-pointer
 CFLAGS = -g -Wall -Wextra -Werror
 CFLAGS_STD = -std=gnu11
 CFLAGS_DEP = -MT $@ -MD -MP -MF $(@:.o=.d)

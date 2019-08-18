@@ -1,8 +1,12 @@
 # woody [![Build Status](https://travis-ci.org/jjourdai/woody.svg?branch=master)](https://travis-ci.org/jjourdai/woody)
 
+Le but est de coder un programme qui aura pour tâche, dans un premiertemps, de chiffrer un programme passé en paramètre. Seuls les ELF 64 bits seront traitésici.Un nouveau programme "woody" sera alors généré à la fin de l’exécution du pro-gramme. Lorsque ce nouveau programme (woody) sera exécuté, il devra se déchiffrerpour pouvoir se lancer. Son exécution sera identique en tout point avec le premier pro-gramme passé en paramétre à l’étape précédente.
+
+Nous avons implémenté 5 algorithmes de chiffrages différents (dont 3 triviaux). Il s'agit de cryptages xor (sur 8, 16 et 32 bits) ainsi que les algorithmes de chiffrement rc4 et rc5.
+
 Voici un tableau qui récapitule les capacités de notre programme sur plusieurs distributions:
 
-Ce tableau est auto généré (hormis le header avec la commande make dist_tab)
+Ce tableau est généré (hormis le header avec la commande make dist_tab).
 
 | OS-DIST | CIPHER | Tot  | Success | Not enough space | Crash |
 |:------------ |:----:|:--- |:---    |:---             |:---- |
