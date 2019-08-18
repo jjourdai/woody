@@ -63,7 +63,6 @@ for img in $LIST; do
 			docker run \
 				--rm \
 				--privileged \
-				-v "$3:/tab" \
 				-t "woody-${DIST}-${img}" \
 				tab "${DIST}-${img}"
 			;;

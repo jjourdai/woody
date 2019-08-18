@@ -121,13 +121,16 @@ _tab() {
 		rm -f woody
 	done
 
-	printf "| %s | %s | %d | %d | %d | %d |\\n" "$DIST" "$CIPHER" "$NB_FILES" "$NB_FILES_OK" "$NB_FILES_NES" "$NB_FILES_KO" >> /tab/out
+	printf "| %s | %s | %d | %d | %d | %d |\\n" "$DIST" "$CIPHER" "$NB_FILES" "$NB_FILES_OK" "$NB_FILES_NES" "$NB_FILES_KO" >> /tmp/out
 }
 
 tab() {
+	rm -f /tmp/out
+	touch /tmp/out
 	for ciph in $CIPHERS; do
 		_tab "$ciph" "$1"
 	done
+	cat /tmp/out
 }
 
 case $1 in

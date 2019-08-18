@@ -6,7 +6,7 @@
 #    By: jpriou <jpriou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/17 13:28:01 by jjourdai          #+#    #+#              #
-#    Updated: 2019/08/18 11:20:28 by jpriou           ###   ########.fr        #
+#    Updated: 2019/08/18 12:42:37 by jpriou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,9 +106,6 @@ dist_test:
 dist_prepare:
 	make -f test.mk all CMD="prepare"
 
-VOL_TAB=$(shell pwd)/tmp/
-
 .PHONY: dist_tab
 dist_tab:
-	make -f test.mk all CMD="tab" VOL_TAB=$(VOL_TAB)
-	cat $(VOL_TAB)/out
+	make -f test.mk all CMD="tab"
