@@ -4,7 +4,7 @@ set -eux
 
 UBUNTUS="xenial bionic cosmic disco eoan"
 DEBIANS="stretch buster"
-FEDORAS="26 27 28 29 30 31"
+FEDORAS="26 27 28 29 30"
 ARCHLINUX="base"
 KALILINUX="base"
 DIST=""
